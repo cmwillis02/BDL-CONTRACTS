@@ -1,18 +1,10 @@
-<html>
-    <head>
-        <title>BDL Franchise List</title>
-    </head>
-    <body>
-        <div>
-            <h1>Franchise List</h1>
-        </div>
+{% extends 'contracts/base.html' %}
 
-        <div>
-        {% for franchise in franchises %}
-        	
-        	<p> <a href="">{{franchise.team_name}}</a> ({{franchise.owner_name}})</p>
+{% block content %}
 
-        {% endfor %}
-        </div>
-    </body>
-</html>
+	<h1><strong> Franchise List </strong></h1>
+	{% for franchise in franchises %}
+		<h2> <a href="{% url 'franchise_detail' pk=franchise.pk %}">{{franchise.team_name}}</a> ({{franchise.owner_name}})</h2>
+
+    {% endfor %}
+{% endblock %}
