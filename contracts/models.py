@@ -58,4 +58,8 @@ class Player(models.Model):
 	position= models.CharField(max_length= 1, choices= Position)
 	date_of_birth= models.DateField(null= True, blank= True)
 	
+	def __str__(self):
+		
+		return self.name
+	
 	

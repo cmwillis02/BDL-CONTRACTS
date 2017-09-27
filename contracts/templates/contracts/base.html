@@ -8,8 +8,18 @@
 		<link href="//fonts.googleapis.com/css?family=Raleway&subset=latin,latin-ext" rel="stylesheet" type="text/css">
     </head>
     <body>
-        {% block content %}
-        {% endblock %}
+    <div class="page-header">
+            <a href="{% url 'contract_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+            <h1>BDL Contracts</h1>
+        </div>
         
+        <div class= "container">
+        	<div class= "row">
+        		<div class= "col-md-8">
+        			{% block content %}
+        			{% endblock %}
+        		</div>
+        	</div>
+        </div>	
     </body>
 </html>
