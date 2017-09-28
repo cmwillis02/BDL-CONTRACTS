@@ -89,13 +89,27 @@ class contract(object):
 		#			)
 		print (player_id, franchise_id, years, 'NEW CONTRACT')
 		
+	def close_current_contract():
 		
+		# Close original contract then enter updated contract
+		cur.execute(
+					"UPDATE contracts_contract SET current_ind = ?, date_terminated = ? WHERE id = ?", ('N', datetime.date.today(), self.current_contract_id)
+					)
+		conn.commit()
+		
+def close_contracts(updated_contracts):
+	# Close all contracts that are no longer current
+	
+	for entry in updated_contracts:
+		print ([item for item in current_contracts if item[2] == entry])
+				
 
 
 # -- MAIN PROCESS -- #
 
 
 current_contracts= get_current_contracts()
+updated_contracts= []
 
 rosters_js= create_json(61,'rosters', 2017, 21676)
 for franchise in range(0,10):
@@ -109,6 +123,16 @@ for franchise in range(0,10):
 		contract_entry= contract(player_id, franchise_id, years)
 		contract_entry.set_status()
 		
-		if contract_entry.status == 'New':
+		if contract_entry.status == 'Current': continue
+		
+		elif contract_entry.status == 'New':
 			contract_entry.enter_new_contract()
+		
+		elif contract_entry.status == 'Edit':
+			contract_entry.close_current_contract()
+			contract_entry.enter_new_contract()
+			
+		updated_contracts.append(contract_entry.current_contract_id)
+			
+		
 				
