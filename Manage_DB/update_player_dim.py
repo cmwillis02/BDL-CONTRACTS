@@ -42,7 +42,8 @@ def create_json(server,type, year, league_id):
 	run_date= str(cur.fetchone()[0])
 	
 	url= 'http://www' + str(server) + '.myfantasyleague.com/' + str(year) + '/export?TYPE=' + type + '&L=' + str(league_id) + '&SINCE=' + run_date + '&APIKEY=&FRANCHISE=&JSON=1'
-	
+
+	print (url)
 	uh= urlopen(url)
 	data= uh.read()
 	js=json.loads(data)
@@ -54,8 +55,15 @@ def create_json(server,type, year, league_id):
 def load_players():
 	
 	players_js= create_json(61,'players',2017, 21676)
-
-	if len(players_js) >3:
+	
+	try:
+		players_js['error']
+		run= 'n'
+		print ('NO NEW PLAYERS')
+	except:
+		run= 'y'
+	
+	if run == 'y':
 	
 		for item in players_js["players"]["player"]:
 			player_id= item["id"]
@@ -73,14 +81,9 @@ def load_players():
 							'INSERT INTO contracts_player (player_id, position, name) VALUES (%s, %s, %s)',(player_id, position_code, name)
 							)
 				conn.commit()
-
+	
 			except psycopg2.IntegrityError:
 				conn.rollback()
-				
-				cur.execute(
-							'UPDATE contracts_player SET position = %s WHERE player_id = %s', (position, player_id)
-							)
-				conn.commit()
 
 
 load_players()
