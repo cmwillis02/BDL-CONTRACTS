@@ -95,7 +95,7 @@ class contract(object):
 					self.status= 'Edit'
 					
 					cur.execute(
-								"SELECT id FROM contracts_contract WHERE player_id= %s AND franchise_id= %s AND current_ind = 'Y'", (self.player_id, self.franchise_id)
+								"SELECT id FROM contracts_contract WHERE player_id= %s AND current_ind = 'Y'", (self.player_id,)
 								)
 					self.current_contract_id= cur.fetchone()[0]
 					
@@ -163,6 +163,6 @@ conn.commit()
 
 # Update job_log table
 cur.execute(
-				'INSERT INTO job_log (job_name, run_date) VALUES (%s, %s)',('load roster', int(time.time()))
+				'INSERT INTO job_log (job_name, run_date) VALUES (%s, %s)',('load roster', int(datetime.time()))
 				)
 conn.commit()

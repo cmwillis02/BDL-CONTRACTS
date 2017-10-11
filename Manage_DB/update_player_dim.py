@@ -37,7 +37,7 @@ except:
 def create_json(server,type, year, league_id):
 
 	cur.execute(
-				'SELECT max(run_date) FROM job_log'
+				"SELECT max(run_date) FROM job_log WHERE job_name = 'load_players'"
 				)
 	run_date= str(cur.fetchone()[0])
 	
