@@ -2,7 +2,7 @@ import psycopg2
 from urllib.request import urlopen
 import json
 import sys
-import datetime
+import time
 
 
 
@@ -163,6 +163,6 @@ conn.commit()
 
 # Update job_log table
 cur.execute(
-				'INSERT INTO job_log (job_name, run_date) VALUES (%s, %s)',('load roster', int(datetime.time()))
+				'INSERT INTO job_log (job_name, run_date) VALUES (%s, %s)',('Update Rosters', int(time.time()))
 				)
 conn.commit()
