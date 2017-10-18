@@ -79,6 +79,7 @@ def import_weekly_results(server, year, week, league_id):
     for m_id in r:
         
         for item in js["weeklyResults"]["matchup"][m_id]["franchise"]:
+        	print item
             franchise_id=item["id"]
             try:
                 result=item["result"]
