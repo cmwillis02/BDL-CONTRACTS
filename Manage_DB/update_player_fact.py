@@ -1,6 +1,9 @@
 import psycopg2
 from urllib.request import urlopen
 import json
+import sys
+
+# --- DATABASE CONNECTION --- #     
 
 dsn_database= 'CORE'
 dsn_hostname= 'bdlcompanion.cquxuyvkuxqs.us-east-1.rds.amazonaws.com'
@@ -17,26 +20,10 @@ try:
 except:
 	print ('Unable to connect')
 	sys.exit(1)
+  
  
-cur.execute(
-			"SELECT week_id, year, week FROM contracts_week WHERE week_id IN (SELECT min(week_id) FROM contracts_week WHERE run_status <> 1)"
-			)
-run_week= cur.fetchall()
-week_id= run_week[0][0]
-year= run_week[0][1]
-week= run_week[0][2]
-
-cur.execute(
-			"SELECT url, league_id FROM url WHERE year = %s", (year,)
-			)
-result= cur.fetchall()
-server= str(int(result[0][0]))
-league_id = str(int(result[0][1]))
-
- 
- 
- 
-        
+# --- FUNCTION DEFINITIONS --- #    
+         
 def create_mfl_json(server, year, week, league_id, type):
     
     url = 'http://www' + str(server) + '.myfantasyleague.com/' + str(year) + '/export?TYPE=' + type + '&L=' + str(league_id) + '&W=' + str(week) + '&YEAR=' + str(year) + '&PLAYERS=&POSITION=&STATUS=&RULES=&COUNT=&JSON=1'
@@ -62,7 +49,7 @@ def import_player_scores(server, year, week, league_id, week_id):
         			"INSERT INTO contracts_player_fact (player_id, week_id, roster_status, score) VALUES (%s, %s, %s, %s)", (player_id, week_id, 'FA',  score)
         			)
         			
-def weekly_results_players(players, year, week, franchise_id, m_id, result):
+def weekly_results_players(players, year, week, franchise_id):
 
 	for player in players:
 		player_id= player["id"]
@@ -81,7 +68,7 @@ def weekly_results_players(players, year, week, franchise_id, m_id, result):
 		conn.commit()
 
 def import_weekly_results(server, year, week, league_id):
-    
+	
 	js=create_mfl_json(server, year, week, league_id, 'weeklyResults')
 
 	if year!=2013:
@@ -106,7 +93,7 @@ def import_weekly_results(server, year, week, league_id):
 			r=range(0,5)
 
 	for m_id in r:
-        
+	
 		for item in js["weeklyResults"]["matchup"][m_id]["franchise"]:
 			franchise_id= item["id"]
 			try:
@@ -115,18 +102,18 @@ def import_weekly_results(server, year, week, league_id):
 				result= 't'
 			players=item["player"]
 
-			weekly_results_players(players, year, week, franchise_id, m_id, result)
-			
+			weekly_results_players(players, year, week, franchise_id)
+		
 			cur.execute(
 						"SELECT sum(score) FROM contracts_player_fact WHERE week_id = %s AND franchise_id = %s AND roster_status = 's'", (week_id, franchise_id)
 						)
 			score= cur.fetchone()[0]
-			
+		
 			cur.execute(
 						"INSERT INTO contracts_franchise_fact (franchise_id, week_id, result, matchup_type, total_score) VALUES (%s, %s, %s, %s, %s)", (franchise_id, week_id, result.lower(), 'r', score)
 						)
 			conn.commit()
-			
+		
 			matchups.append((m_id, int(franchise_id), score))
 			
 def set_matchups(matchup_list):
@@ -147,24 +134,66 @@ def set_matchups(matchup_list):
 					"UPDATE contracts_franchise_fact SET opponent_id = %s, opponent_score = %s WHERE franchise_id = %s AND week_id = %s", (opponent_id, opponent_score, team_id, week_id)
 					)
 		conn.commit()
-					
 		
+def import_bye_weeks(server, year, week, league_id):
+
+	js=create_mfl_json(server, year, week, league_id, 'weeklyResults')
+	
+	for item in js["weeklyResults"]["franchise"]:
+		franchise_id=item["id"]
+	
+		players=item["player"]
 		
-			
-			
-			
-                                        
+		weekly_results_players(players, year, week, franchise_id)
+		
+		cur.execute(
+						"SELECT sum(score) FROM contracts_player_fact WHERE week_id = %s AND franchise_id = %s AND roster_status = 's'", (week_id, franchise_id)
+						)
+		score= cur.fetchone()[0]
+		
+		cur.execute(
+					"INSERT INTO contracts_franchise_fact (franchise_id, week_id, matchup_type, total_score) VALUES (%s, %s, %s, %s)", (franchise_id, week_id, 'b', score)
+					)
+		conn.commit()
+					                                    
         
 # --- MAIN PROCESS --- #        
 
-matchups= []
-import_player_scores(server, year , week , league_id, week_id)
-import_weekly_results(server, year, week, league_id)
-conn.commit()
-set_matchups(matchups)
+# Pull year week, url, and league_id values from week table.
+cur.execute(
+			"SELECT week_id, year, week FROM contracts_week WHERE week_id IN (SELECT min(week_id) FROM contracts_week WHERE run_status <> 1)"
+			)
+run_week= cur.fetchall()
+week_id= run_week[0][0]
+year= run_week[0][1]
+week= run_week[0][2]
+
+if week != 17:
+
+	cur.execute(
+				"SELECT url, league_id FROM url WHERE year = %s", (year,)
+				)
+	result= cur.fetchall()
+	server= str(int(result[0][0]))
+	league_id = str(int(result[0][1]))
+
+
+	matchups= []
+	import_player_scores(server, year , week , league_id, week_id)
+	import_weekly_results(server, year, week, league_id)
+	if week in [14, 15, 16]:
+		import_bye_weeks(server, year, week, league_id)
+
+	conn.commit()
+
+	set_matchups(matchups)
+	
+else:
+	print ('Skip week 17')
 
 # Update contracts_week to reflect run status after succesful completion.
 cur.execute(
 			"UPDATE contracts_week SET run_status = 1 WHERE week_id = %s", (week_id, )
 			)
 conn.commit()
+

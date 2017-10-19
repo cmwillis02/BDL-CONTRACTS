@@ -106,7 +106,7 @@ class Franchise_fact(models.Model):
 				('l', 'Loss'),
 				('t', 'Tie'),
 			)
-	result= models.CharField(max_length= 1, choices= result, blank= True)
+	result= models.CharField(max_length= 1, choices= result, null= True)
 	total_score= models.FloatField()
 	opponent_score= models.FloatField(null= True)
 	
