@@ -53,19 +53,25 @@ def weekly_results_players(players, year, week, franchise_id):
 
 	for player in players:
 		player_id= player["id"]
-		if player["score"] == '':
-			score= 0
-		else:
-			score= float(player["score"])
 		if player["status"] == 'starter':
 			status= 's' 
 		else: 
 			status= 'b'
+		
+		if player["score"] == '':
+			score= 0
+			
+			cur.execute(
+						"INSERT INTO contracts_player_fact (week_id, player_id, franchise_id, score, roster_status) VALUES (%s, %s, %s, %s, %s)", (week_id, player_id, franchise_id, score, status)
+						)
+						
+		else:
+			score= float(player["score"])
         
-		cur.execute(
-					"UPDATE contracts_player_fact SET franchise_id = %s, roster_status = %s WHERE player_id = %s AND week_id = %s", (int(franchise_id), status, player_id, week_id)
-					)
-		conn.commit()
+			cur.execute(
+						"UPDATE contracts_player_fact SET franchise_id = %s, roster_status = %s WHERE player_id = %s AND week_id = %s", (int(franchise_id), status, player_id, week_id)
+						)
+			conn.commit()
 
 def import_weekly_results(server, year, week, league_id):
 	
