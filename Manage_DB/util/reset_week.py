@@ -1,4 +1,5 @@
 import psycopg2
+import sys
 
 dsn_database= 'CORE'
 dsn_hostname= 'bdlcompanion.cquxuyvkuxqs.us-east-1.rds.amazonaws.com'
