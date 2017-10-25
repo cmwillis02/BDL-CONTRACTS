@@ -3,7 +3,15 @@
 import psycopg2
 from urllib.request import urlopen
 import json
-import sys	
+import sys
+import datetime
+
+# Program only runs on tuesdays during the season
+
+if datetime.datetime.today().weekday() != 1:
+	print ("Fact tables only update on tuesdays")
+	sys.exit(1)
+	
 
 # --- DATABASE CONNECTION --- #     
 
