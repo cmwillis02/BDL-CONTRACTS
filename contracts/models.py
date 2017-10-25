@@ -124,6 +124,7 @@ class Week(models.Model):
 	week= models.IntegerField()
 	start_date= models.DateField()
 	end_date= models.DateField()
+	run_date= models.DateField(null= True)
 	run_status= models.IntegerField()
 	
 	def __str__(self):

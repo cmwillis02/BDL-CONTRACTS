@@ -199,7 +199,7 @@ if week != 17:
 else:
 	print ('Skip week 17')
 
-# Update contracts_week to reflect run status after succesful completion.
+# --- UPDATE REFERENCES (contracts_week, job_log) ---#
 cur.execute(
 			"UPDATE contracts_week SET run_status = 1 WHERE week_id = %s", (week_id, )
 			)
