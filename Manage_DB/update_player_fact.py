@@ -56,7 +56,7 @@ def import_player_scores(server, year, week, league_id, week_id):
         player_id = item["id"]
         
         cur.execute(
-        			"INSERT INTO contracts_player_fact (player_id, week_id, roster_status, score) VALUES (%s, %s, %s, %s)", (player_id, week_id, 'FA',  score)
+        			"INSERT INTO contracts_player_fact (player_id, week_id, roster_status, score) VALUES (%s, %s, %s, %s)", (player_id, week_id, status,  score)
         			)
         			
 def weekly_results_players(players, year, week, franchise_id):
