@@ -10,7 +10,7 @@ import datetime
 
 if datetime.datetime.today().weekday() != 1:
 	print ("Fact tables only update on tuesdays")
-	sys.exit(1)
+	sys.exit(0)
 	
 
 # --- DATABASE CONNECTION --- #     

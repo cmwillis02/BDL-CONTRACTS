@@ -4,7 +4,6 @@ from .models import Franchise, Player, Contract
 # Register your models here.
 
 admin.site.register(Franchise)
-#admin.site.register(Contract)
 admin.site.register(Player)
 
 # Def admin class for contract registration
