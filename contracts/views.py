@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from .forms import ContractForm
 
 # Create your views here.
-
+	
 def franchise_list(request):
 	
 	franchises= Franchise.objects.all()
@@ -13,7 +13,9 @@ def franchise_list(request):
 def franchise_detail(request, pk):
     
     franchise = get_object_or_404(Franchise, pk=pk)
-    return render(request, 'contracts/franchise_detail.html', {'franchise': franchise})	
+    players= Player.objects.filter(contract__current_ind = 'True').filter(contract__franchise_id = pk).order_by('contract__years')
+    
+    return render(request, 'contracts/franchise_detail.html', {'franchise': franchise, 'players': players})	
     
 def contract_new(request):
     

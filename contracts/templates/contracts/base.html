@@ -1,7 +1,8 @@
 {% load staticfiles %}
 <html>
     <head>
-        <title>BDL Franchise List</title>
+    	{% block title %}
+        {% endblock %}
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="{% static 'css/contracts.css' %}">
@@ -9,7 +10,6 @@
     </head>
     <body>
     <div class="page-header">
-            <a href="{% url 'contract_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
             <h1>BDL Contracts</h1>
         </div>
         

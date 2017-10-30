@@ -1,14 +1,27 @@
 {% extends 'contracts/base.html' %}
 
+{% block title %}
+<title> {{ franchise.team_name }} Roster </title>
+{% endblock %}
+
 {% block content %}
     <div>
         <h1>{{ franchise.team_name}} </h1>
         <p>{{franchise.owner_name}} {{franchise.owner_email}}</p>
     </div>
+    <div>
+    	<h2> Pending Contracts </h2>  		
+    </div>
+    
     
     <div>
-    	<h2> Current Roster </h2>
+    	<h2> Active Contracts </h2>
     	
+    	{% for player in players %}
+    	
+    	<li> <a href= ""> {{player.name}}</a> {{ player.get_position_display }} - {{ contract.years }} </li>
+    	
+    	{% endfor %}
     		
     </div>
 {% endblock %}
