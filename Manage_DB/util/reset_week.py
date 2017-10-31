@@ -18,28 +18,28 @@ except:
 	sys.exit(1)
 
 
-	
+
 week_id= int(input("Enter week to reset: ", ))
 
 if week_id == 99:
 
 	run_yn= input("RESET ALL WEEKS? (y/n): ", )
-	
+
 	if run_yn == 'y':
 		cur.execute(
 					"UPDATE contracts_week SET run_status = 0"
 					)
-	
+
 		cur.execute(
 					"DELETE FROM contracts_player_fact"
 					)
-	
+
 		cur.execute(
 					"DELETE FROM contracts_franchise_fact"
 					)
 
 		conn.commit()
-	
+
 		print ('ALL WEEKS RESET')
 	else:
 		sys.exit(1)
@@ -47,15 +47,14 @@ else:
 	cur.execute(
 				"UPDATE contracts_week SET run_status = 0 WHERE week_id = %s", (week_id, )
 				)
-	
+
 	cur.execute(
 				"DELETE FROM contracts_player_fact WHERE week_id = %s", (week_id, )
 				)
-	
+
 	cur.execute(
 				"DELETE FROM contracts_franchise_fact WHERE week_id = %s", (week_id, )
 				)
 
 	conn.commit()
 
-	
