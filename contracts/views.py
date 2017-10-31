@@ -13,9 +13,16 @@ def franchise_list(request):
 def franchise_detail(request, pk):
     
     franchise = get_object_or_404(Franchise, pk=pk)
-    players= Player.objects.filter(contract__current_ind = 'True').filter(contract__franchise_id = pk).order_by('contract__years')
+    active= Contract.objects.filter(current_ind = 'True').filter(franchise_id = pk).order_by('years')
     
-    return render(request, 'contracts/franchise_detail.html', {'franchise': franchise, 'players': players})	
+    
+    return render(request, 'contracts/franchise_detail.html', {'franchise': franchise, 'active_players': active})	
+    
+def player_detail(request, pk):
+	
+	contract = Contract.objects.filter(player_id = pk).order_by('-id')[0]
+	
+	return render(request, 'contracts/player_detail.html', {'contract' : contract})
     
 def contract_new(request):
     

@@ -12,15 +12,20 @@
     <div>
     	<h2> Pending Contracts </h2>  		
     </div>
+    	{% for player in pending_players %}
+    	
+    	<li> <a href= ""> {{ contract.player.name }} </a> {{ player.get_position_display }} - </li>
+    	
+    	{% endfor %}
     
     
     <div>
     	<h2> Active Contracts </h2>
     	
-    	{% for player in players %}
+    	{% for player in active_players %}
     	
-    	<li> <a href= ""> {{player.name}}</a> {{ player.get_position_display }} - {{ contract.years }} </li>
-    	
+    	<li> <a href= "/contracts/player/{{player.player_id}}"> {{ player.player.name }}</a> {{ player.player.get_position_display }} - {{ player.years }}</li>
+    	 
     	{% endfor %}
     		
     </div>

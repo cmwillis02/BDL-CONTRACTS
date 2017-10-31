@@ -1,0 +1,28 @@
+{% extends 'contracts/base.html' %}
+
+{% block title %}
+<title> {{ contract.player.name }} Roster </title>
+{% endblock %}
+
+{% block content %}
+<div>
+	
+
+	
+	<h1>{{ contract.player.name }}</h1>
+	{% if contract.current_ind is True %}
+	
+		<body> <strong>{{ contract.years }} Years  {{ contract.franchise.team_name }}</strong> </body> 
+	
+	{% else %}
+	
+		<body> <strong> Free Agent </strong></body>
+	{% endif %}
+	
+	
+</div>
+
+<div>
+	<h2> Accomplishments </h2>
+</div>
+{% endblock %}

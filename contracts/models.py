@@ -8,8 +8,8 @@ class Contract(models.Model):
 	Model representing Contract Fact
 	"""
 
-	player= models.ForeignKey('Player', on_delete= models.CASCADE, db_index=True)
-	franchise= models.ForeignKey('Franchise', on_delete= models.CASCADE, db_index= True)
+	player= models.ForeignKey('Player', on_delete= models.CASCADE, db_index=True, related_name = 'contract')
+	franchise= models.ForeignKey('Franchise', on_delete= models.CASCADE, db_index= True, related_name = 'contract')
 	current_ind= models.BooleanField()
 	date_assigned= models.DateField()
 	years= models.IntegerField(default= 0)
