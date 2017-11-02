@@ -23,9 +23,4 @@ def player_detail(request, pk):
 	contract = Contract.objects.filter(player_id = pk).order_by('-id')[0]
 	
 	return render(request, 'contracts/player_detail.html', {'contract' : contract})
-    
-def contract_new(request):
-    
-    form = ContractForm()
-    return render(request, 'contracts/contract_new.html', {'form': form})
 	

@@ -1,5 +1,7 @@
 from django.db import models
 import uuid
+from datetime import date
+import datetime
 
 # Create your models here.
 
@@ -14,6 +16,27 @@ class Contract(models.Model):
 	date_assigned= models.DateField()
 	years= models.IntegerField(default= 0)
 	date_terminated= models.DateField(null= True)
+	
+	def get_years_remaining(self):
+		"Returns the number of years remaining on this contract, if the contract is not current returns NULL"
+		
+		if self.current_ind is None:
+			years_remaining= None
+		else:
+			today= date.today()
+			
+			if today.month in [1,2]:
+				current_year= today.year
+			else:
+				current_year= today.year + 1
+			
+			check_date= date(current_year, 2, 1)
+		
+			years_elapsed= int(((check_date - self.date_assigned).days)/365)
+		
+			years_remaining= self.years - years_elapsed
+			
+			return years_remaining
 	
 	def __str__(self):
 		
