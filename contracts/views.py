@@ -12,11 +12,12 @@ def franchise_list(request):
 
 def franchise_detail(request, pk):
     
-    franchise = get_object_or_404(Franchise, pk=pk)
-    active= Contract.objects.filter(current_ind = 'True').filter(franchise_id = pk).order_by('years')
+    franchise = get_object_or_404(Franchise, pk= pk)
+    active= Contract.objects.filter(current_ind= 'True').filter(franchise_id= pk).exclude(years= 0).order_by('years')
+    pending= Contract.objects.filter(current_ind= 'True').filter(franchise_id= pk).filter(years= 0)
     
     
-    return render(request, 'contracts/franchise_detail.html', {'franchise': franchise, 'active_players': active})	
+    return render(request, 'contracts/franchise_detail.html', {'franchise': franchise, 'active_players': active, 'pending_players' : pending})	
     
 def player_detail(request, pk):
 	

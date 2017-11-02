@@ -30,6 +30,7 @@ class Contract(models.Model):
 			else:
 				current_year= today.year + 1
 			
+			# --- ASSIGNMENT OF CONTRACT DECREMENT DATE ---#
 			check_date= date(current_year, 2, 1)
 		
 			years_elapsed= int(((check_date - self.date_assigned).days)/365)

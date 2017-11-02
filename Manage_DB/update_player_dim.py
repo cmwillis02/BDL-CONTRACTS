@@ -85,7 +85,7 @@ def load_players():
 			except psycopg2.IntegrityError:
 				conn.rollback()
 
-
+# --- MAIN PROCESS --- #
 load_players()
 
 # Update job_log table
