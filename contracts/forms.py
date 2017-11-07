@@ -5,4 +5,4 @@ class ContractForm(forms.ModelForm):
 
     class Meta:
         model = Contract
-        fields = ('player', 'franchise', 'years',)
+        fields = ['years']

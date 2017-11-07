@@ -9,12 +9,13 @@
         <h1>{{ franchise.team_name}} </h1>
         <p>{{franchise.owner_name}} {{franchise.owner_email}}</p>
     </div>
+        <button type= "submit"> Refresh Roster </button>
     <div>
     	<h2> Pending Contracts </h2>  		
     </div>
     	{% for player in pending_players %}
     	
-    	<li> <a href= "{% url 'player_detail' player.player.player_id %}"> {{ player.player.name }} </a> {{ player.player.get_position_display }} - </li>
+    	<li> <a href= "{{ player.get_update_url }}"> {{ player.player.name }} </a> {{ player.player.get_position_display }} - </li>
     	
     	{% endfor %}
     
@@ -29,4 +30,5 @@
     	{% endfor %}
     		
     </div>
+
 {% endblock %}

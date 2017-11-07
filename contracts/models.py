@@ -2,6 +2,7 @@ from django.db import models
 import uuid
 from datetime import date
 import datetime
+from django.urls import reverse
 
 # Create your models here.
 
@@ -42,6 +43,10 @@ class Contract(models.Model):
 	def __str__(self):
 		
 		return '%s (%s)' % (self.player.name, self.franchise.team_name)
+		
+	def get_update_url(self):
+		
+		return reverse('update_contract', kargs= {'pk' : self.pk})
 	
 		
 class Franchise(models.Model):
