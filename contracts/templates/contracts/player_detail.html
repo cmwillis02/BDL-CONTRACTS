@@ -11,8 +11,12 @@
 	
 	<h1>{{ contract.player.name }}</h1>
 	{% if contract.current_ind is True %}
-	
-		<body> <strong>{{ contract.get_years_remaining }} Years  {{ contract.franchise.team_name }}</strong> </body> 
+		{% if contract.years == 0 %}
+			{% block contract_form %}
+			{% endblock %}
+		{% else %}
+			<body> <strong>{{ contract.get_years_remaining }} Years  {{ contract.franchise.team_name }}</strong> </body> 
+		{% endif %}
 	
 	{% else %}
 	
@@ -24,5 +28,6 @@
 
 <div>
 	<h2> Accomplishments </h2>
+	<body> Put History and accomplishments detail here... </body>
 </div>
 {% endblock %}

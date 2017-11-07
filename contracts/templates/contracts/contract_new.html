@@ -1,7 +1,6 @@
-{% extends 'contracts/base.html' %}
+{% extends 'contracts/player_detail.html' %}
 
-{% block content %}
-    <h1>New Contract</h1>
+{% block contract_form %}
     <form method="POST" class="contract-form">
     	{% csrf_token %}
         {{ form.as_p }}
