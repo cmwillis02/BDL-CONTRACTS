@@ -46,7 +46,7 @@ class Contract(models.Model):
 		
 	def get_update_url(self):
 		
-		return reverse('update_contract', kargs= {'pk' : self.pk})
+		return reverse('update_contract', kwargs= {'pk' : self.pk})
 	
 		
 class Franchise(models.Model):
