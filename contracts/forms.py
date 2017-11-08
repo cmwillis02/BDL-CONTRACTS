@@ -13,10 +13,10 @@ class ContractForm(forms.ModelForm):
         	data= self.cleaned_data['years']
         	current_roster_years= total_years= Contract.objects.filter(franchise_id= 8).filter(current_ind= 'True').Aggregate(Sum('years'))
         	
-        	if int(data) + int(current_roster_years) > 50:
+        	if data + current_roster_years > 50:
         		raise ValidationError('Roster Error:  Contract will put roster over 50 year max')
         		
-        	if int(data) <= 0:
+        	if data <= 0:
         		raise ValidationError('Contract Error: Contracts must be 1 year or more')
         		
         	return data

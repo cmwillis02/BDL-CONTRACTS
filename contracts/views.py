@@ -4,7 +4,6 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import View
 from .forms import ContractForm
 
-# Create your views here.
 	
 def franchise_list(request):
 	
@@ -48,8 +47,9 @@ class ContractUpdate(View):
 		bound_form= self.form_class(request.POST, instance= contract)
 		
 		if bound_form.is_valid():
-			new_contract= bound_form.save()
-			return redirect(new_contract)
+			contract_inst= bound_form.cleaned_data['years']
+			contract_inst.save()
+			return redirect(reverse('franchise_detail'))
 		else:
 			context= {'form': bound_form, 'contract' : contract}
 			return render(request, self.template_name, context)
