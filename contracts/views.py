@@ -14,8 +14,8 @@ def franchise_list(request):
 def franchise_detail(request, pk):
     
     franchise = get_object_or_404(Franchise, pk= pk)
-    active= Contract.objects.filter(current_ind= 'True').filter(franchise_id= pk).exclude(years= 0).order_by('years')
-    pending= Contract.objects.filter(current_ind= 'True').filter(franchise_id= pk).filter(years= 0)
+    active= Contract.objects.filter(current_ind= 'True').filter(franchise_id= pk).exclude(years_remaining= 0).order_by('years_remaining')
+    pending= Contract.objects.filter(current_ind= 'True').filter(franchise_id= pk).filter(years_remaining= 0)
     
     
     return render(request, 'contracts/franchise_detail.html', {'franchise': franchise, 'active_players': active, 'pending_players' : pending})	
@@ -31,16 +31,26 @@ class ContractUpdate(View):
 	form_class= ContractForm
 	model= Contract
 	template_name= 'contracts/contract_new.html'
+	franchise_id= None
 	
 	def get_object(self, pk):
 		
 		return get_object_or_404(self.model, pk= pk)
+	
+	def get_form_kwargs(self, pk):
+		# Inject franchise_id value into form for contract years validation
+		
+		obj= self.get_object(pk)
+		kwargs= super(ContractUpdate, self).get_form_kwargs()
+		kwargs['franchise_id']= obj.franchise_id
+		
+		return kwargs
 		
 	def get(self, request, pk):
 		
 		contract= self.get_object(pk)
 		self.franchise_id = contract.franchise_id
-		context= {'form' : self.form_class(instance= contract) , 'contract' : contract}
+		context= {'form' : self.form_class(instance= contract, franchise_id= self.franchise_id) ,  'contract' : contract}
 		
 		return render(request, self.template_name, context)
 		
@@ -48,8 +58,10 @@ class ContractUpdate(View):
 		
 		contract= self.get_object(pk)
 		bound_form= self.form_class(request.POST, instance= contract)
+		bound_form.full_clean()
 		
 		if bound_form.is_valid():
+			contract.years_remaining= contract.years
 			bound_form.save()
 			return redirect(reverse('franchise_detail', kwargs= {'pk' : contract.franchise_id}))
 		else:

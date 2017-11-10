@@ -110,9 +110,9 @@ class contract(object):
 
 	def enter_new_contract(self, years):
 
-		# Default all new contracts to 0 years.
+		# All new contracts should be default assigned to 0 years by MFL.  This will allow traded contracts not to show up on pending assignment
 		cur.execute(
-					'INSERT INTO contracts_contract (current_ind, date_assigned, franchise_id, player_id, years) VALUES (%s, %s, %s, %s, %s)',('true',datetime.date.today(), self.franchise_id, self.player_id, self.years)
+					'INSERT INTO contracts_contract (current_ind, date_assigned, franchise_id, player_id, years, years_remaining) VALUES (%s, %s, %s, %s, %s, %s)',('true',datetime.date.today(), self.franchise_id, self.player_id, self.years, self.years)
 					)
 
 

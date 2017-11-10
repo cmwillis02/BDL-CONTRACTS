@@ -11,11 +11,11 @@
 	
 	<h1>{{ contract.player.name }}</h1>
 	{% if contract.current_ind is True %}
-		{% if contract.years == 0 %}
+		{% if contract.years_remaining == 0 %}
 			{% block contract_form %}
 			{% endblock %}
 		{% else %}
-			<body> <strong>{{ contract.get_years_remaining }} Years  {{ contract.franchise.team_name }}</strong> </body> 
+			<body> <strong>{{ contract.years_remaining }} Years  {{ contract.franchise.team_name }}</strong> </body> 
 		{% endif %}
 	
 	{% else %}
