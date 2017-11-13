@@ -36,15 +36,6 @@ class ContractUpdate(View):
 	def get_object(self, pk):
 		
 		return get_object_or_404(self.model, pk= pk)
-	
-	def get_form_kwargs(self, pk):
-		# Inject franchise_id value into form for contract years validation
-		
-		obj= self.get_object(pk)
-		kwargs= super(ContractUpdate, self).get_form_kwargs()
-		kwargs['franchise_id']= obj.franchise_id
-		
-		return kwargs
 		
 	def get(self, request, pk):
 		
@@ -57,8 +48,7 @@ class ContractUpdate(View):
 	def post(self, request, pk):
 		
 		contract= self.get_object(pk)
-		bound_form= self.form_class(request.POST, instance= contract)
-		bound_form.full_clean()
+		bound_form= self.form_class(contract.franchise_id, request.POST, instance= contract)
 		
 		if bound_form.is_valid():
 			contract.years_remaining= contract.years
