@@ -51,7 +51,7 @@ def close_current_contract(contract_id):
 		# Close a contract with current_ind = 'Y'
 
 		cur.execute(
-					"UPDATE contracts_contract SET current_ind = %s, date_terminated = %s WHERE id = %s", ('N', datetime.date.today(), contract_id)
+					"UPDATE contracts_contract SET current_ind = %s, date_terminated = %s, years_remaining= 0 WHERE id = %s", ('N', datetime.date.today(), contract_id)
 					)
 
 def close_remaining_contracts(current_contracts, processed_contracts):
