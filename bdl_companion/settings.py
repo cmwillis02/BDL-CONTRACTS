@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
+""" Development League http://www61.myfantasyleague.com/2017/home/69302#0"""
 
 import os
 
