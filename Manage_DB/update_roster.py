@@ -152,7 +152,8 @@ for franchise in range(0,10):
 			contract_entry.update_processed_contract_list()
 
 		elif contract_entry.status == 'New':
-			contract_entry.enter_new_contract()
+			#Defaults new contracts to 0 years
+			contract_entry.enter_new_contract(0)
 
 			contract_entry.update_processed_contract_list()
 
