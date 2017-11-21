@@ -1,6 +1,6 @@
 import requests
 
-class import_data():
+class _import():
 	
 	def __init__(self):
 		
