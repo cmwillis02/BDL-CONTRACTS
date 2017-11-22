@@ -51,7 +51,7 @@ def close_current_contract(contract_id):
 		# Close a contract with current_ind = 'Y'
 
 		cur.execute(
-					"UPDATE contracts_contract SET current_ind = %s, date_terminated = %s, years_remaining= 0 WHERE id = %s", ('N', datetime.date.today(), contract_id)
+					"UPDATE contracts_contract SET current_ind = %s, date_terminated = %s, years_remaining= 0, roster_status= '' WHERE id = %s", ('N', datetime.date.today(), contract_id)
 					)
 
 def close_remaining_contracts(current_contracts, processed_contracts):
@@ -70,13 +70,14 @@ class contract(object):
 	"""
 
 
-	def __init__(self, player_id, franchise_id, years):
+	def __init__(self, player_id, franchise_id, years, ir):
 
 		self.player_id= player_id
 		self.franchise_id= franchise_id
 		self.years= years
 		self.status= ''
 		self.current_contract_id= None
+		self.ir= ir
 
 	def set_status(self):
 
@@ -115,7 +116,7 @@ class contract(object):
 			self.years= 0
 		
 		cur.execute(
-					'INSERT INTO contracts_contract (current_ind, date_assigned, franchise_id, player_id, years, years_remaining) VALUES (%s, %s, %s, %s, %s, %s)',('true',datetime.date.today(), self.franchise_id, self.player_id, self.years, self.years)
+					'INSERT INTO contracts_contract (current_ind, roster_status, date_assigned, franchise_id, player_id, years, years_remaining) VALUES (%s, %s, %s, %s, %s, %s, %s)',('true', ir, datetime.date.today(), self.franchise_id, self.player_id, self.years, self.years)
 					)
 
 
@@ -124,6 +125,14 @@ class contract(object):
 
 		if self.current_contract_id != None:
 			processed_contracts.append(self.current_contract_id)
+			
+	def set_ir(self):
+		#Check and set IR status (i= IR, a= ACTIVE)
+		
+		cur.execute(
+					"UPDATE contracts_contract SET roster_status = %s WHERE id = %s",(self.ir, self.current_contract_id)
+					)
+		
 
 
 
@@ -144,14 +153,19 @@ for franchise in range(0,10):
 
 		player_id= item['id']
 		years= item['contractYear']
+		if item['status'] == "INJURED_RESERVE":
+			ir= 'i'
+		else:
+			ir= 'a'
 
 		# -- Create contract object for each contract entry and determine the status (Current, Edit, New)
-		contract_entry= contract(player_id, franchise_id, years)
+		contract_entry= contract(player_id, franchise_id, years, ir)
 		contract_entry.set_status()
 
 		# -- Process each contract entry according to status
 		if contract_entry.status == 'Current':
-
+			
+			contract_entry.set_ir()
 			contract_entry.update_processed_contract_list()
 
 		elif contract_entry.status == 'New':
@@ -161,7 +175,7 @@ for franchise in range(0,10):
 
 		elif contract_entry.status == 'Edit':
 			close_current_contract(contract_entry.current_contract_id)
-			contract_entry.enter_new_contract(contract_entry.years)
+			contract_entry.enter_new_contract()
 
 			contract_entry.update_processed_contract_list()
 

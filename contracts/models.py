@@ -14,6 +14,7 @@ class Contract(models.Model):
 	player= models.ForeignKey('Player', on_delete= models.CASCADE, db_index=True, related_name = 'contract')
 	franchise= models.ForeignKey('Franchise', on_delete= models.CASCADE, db_index= True, related_name = 'contract')
 	current_ind= models.BooleanField()
+	roster_status= models.CharField(max_length= 1, null= True)
 	date_assigned= models.DateField()
 	years= models.IntegerField(default= 0)
 	years_remaining= models.IntegerField(null= True)
