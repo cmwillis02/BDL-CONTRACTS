@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import View
 from .forms import ContractForm
 from django.urls import reverse
+from manage_db import mfl_api
 
 	
 def franchise_list(request):
@@ -14,11 +15,20 @@ def franchise_list(request):
 def franchise_detail(request, pk):
     
     franchise = get_object_or_404(Franchise, pk= pk)
-    active= Contract.objects.filter(current_ind= 'True').filter(franchise_id= pk).exclude(years_remaining= 0).order_by('years_remaining')
+    active= Contract.objects.filter(current_ind= 'True').filter(franchise_id= pk).exclude(years_remaining= 0).exclude(roster_status= 'i').order_by('years_remaining')
     pending= Contract.objects.filter(current_ind= 'True').filter(franchise_id= pk).filter(years_remaining= 0)
+    ir= Contract.objects.filter(current_ind= 'True'). filter(franchise_id= pk).filter(roster_status= 'i')
     
+    active_count= Contract.objects.filter(current_ind= 'True').filter(franchise_id= pk).exclude(roster_status= 'i').count()
+    ir_count= Contract.objects.filter(current_ind= 'True').filter(franchise_id= pk).filter(roster_status= 'i').count()
     
-    return render(request, 'contracts/franchise_detail.html', {'franchise': franchise, 'active_players': active, 'pending_players' : pending})	
+    roster_check= []
+    if active_count > 25:
+    	roster_check.append('Cannot assign contracts with > 25 active players')
+    if ir_count > 3:
+    	roster_check.append('Cannot assign contracts with > 3 IR players')
+    
+    return render(request, 'contracts/franchise_detail.html', {'franchise': franchise, 'active_players': active, 'pending_players' : pending, 'ir' : ir, 'roster_check' : roster_check})	
     
 def player_detail(request, pk):
 	
@@ -41,7 +51,7 @@ class ContractUpdate(View):
 		
 		contract= self.get_object(pk)
 		self.franchise_id = contract.franchise_id
-		context= {'form' : self.form_class(instance= contract, franchise_id= self.franchise_id) ,  'contract' : contract}
+		context= {'form' : self.form_class(instance= contract, franchise_id= self.franchise_id, pk= pk) ,  'contract' : contract}
 		
 		return render(request, self.template_name, context)
 		

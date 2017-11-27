@@ -8,6 +8,11 @@
     <div>
         <h1>{{ franchise.team_name}} </h1>
         <p>{{franchise.owner_name}} {{franchise.owner_email}}</p>
+        
+        {% for message in roster_check %}
+        	<li> {{message}} </li>
+        {% endfor %}
+        
     </div>
         <button type= "submit"> Refresh Roster </button>
     <div>
@@ -15,8 +20,13 @@
     </div>
     	{% for player in pending_players %}
     	
-    	<li> <a href= "{{ player.get_update_url }}"> {{ player.player.name }} </a> {{ player.player.get_position_display }} - </li>
+    	{% if roster_check %}
+    		<li> {{ player.player.name }}  {{player.player.get_position_display}} </li>
     	
+    	{% else %}
+    		<li> <a href= "{{ player.get_update_url }}"> {{ player.player.name }} </a> {{ player.player.get_position_display }} - </li>
+    	
+    	{% endif %}
     	{% endfor %}
     
     
@@ -30,5 +40,14 @@
     	{% endfor %}
     		
     </div>
+    
+    <div>
+    	<h2> Injured Reserve </h2>
+    	
+    	{% for player in ir %}
+    	
+    	<li> <a href= " {%url 'player_detail' player.player.player_id %}"> {{player.player.name}}</a> {{ player.player.get_position_display }} - {{ player.years_remaining }}</li>
+    	
+    	{% endfor %}
 
 {% endblock %}

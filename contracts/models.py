@@ -46,6 +46,7 @@ class Franchise(models.Model):
 	def get_absolute_url(self):
 		
 		return reverse('franchise_detail', args= [str(self.franchise_id)])
+		
 	
 class Player(models.Model):
 	"""

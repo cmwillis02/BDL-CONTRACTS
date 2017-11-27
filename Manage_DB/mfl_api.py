@@ -53,7 +53,7 @@ class export():
 	def __init__(self):
 		
 		#DRY these should be read from somewhere
-		self.league_id= 69302
+		self.league_id= 21676
 		self.username= "cmwillis02"
 		self.password= "02guam04"
 		self.year= 2017
@@ -74,11 +74,23 @@ class export():
 		
 		type= "playerStatus"
 		url= '{}?TYPE={}&L={}&P={}&JSON=1'.format(self.export_url, type, self.league_id, player_id)
-		print (url)
 		response= self.session.get(url)
 		json_data= json.loads(response.text)
 		
 		return json_data
+		
+	def game_status(self, week):
+	
+		self.login()
+		
+		type= "liveScoring"
+		url= '{}?TYPE={}&L={}&W={}&DETAILS=1&JSON=1'.format(self.export_url, type, self.league_id, week)
+		response= self.session.get(url)
+		json_data= json.loads(response.text)
+		
+		return json_data
+		
+		
 
 
 	

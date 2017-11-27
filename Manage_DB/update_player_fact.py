@@ -181,6 +181,11 @@ cur.execute(
 			"SELECT week_id, year, week FROM contracts_week WHERE week_id IN (SELECT min(week_id) FROM contracts_week WHERE run_status <> 1)"
 			)
 run_week= cur.fetchall()
+
+if run_week is None:
+	print ('No run week found, all available weeks have been run')
+	sys.exit(0)
+
 week_id= run_week[0][0]
 year= run_week[0][1]
 week= run_week[0][2]

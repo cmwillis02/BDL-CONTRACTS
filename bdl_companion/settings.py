@@ -26,7 +26,7 @@ SECRET_KEY = 'gty=b$_#cl#-*=@k86dd#ykm$-7bvclh@1#8%19*!lk*=9n5oc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ 'cmwillis02.pythonanywhere.com'
+ALLOWED_HOSTS = [ #'cmwillis02.pythonanywhere.com'
 					]
 
 
