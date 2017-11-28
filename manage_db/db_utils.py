@@ -18,7 +18,6 @@ class db_util():
 			conn_string= "host={} port={} dbname={} user={} password={}".format(self.dsn_hostname, self.dsn_port, self.dsn_database, self.dsn_uid, self.dsn_pwd)
 			conn= psycopg2.connect(conn_string)
 			cur= conn.cursor()
-			print ('Connected')
 			
 			return cur
 		
@@ -30,10 +29,7 @@ class db_util():
 	
 		cur= self.connect()
 		
-		cur.execute("SELECT min(week_id) FROM contracts_week WHERE run_status= 0")
+		cur.execute("SELECT week_id, year, week FROM contracts_week WHERE run_status= 0 AND week_id= (SELECT min(week_id) FROM contracts_week WHERE run_status= 0)")
 		
-		return cur.fetchall()[0][0]
+		return cur.fetchall()[0]
 		
-test= db_util()
-
-print (test.get_current_week())

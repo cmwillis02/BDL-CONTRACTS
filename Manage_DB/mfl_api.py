@@ -1,14 +1,17 @@
 import requests
 import json
+from manage_db import db_utils
 
 class _import():
 	
 	def __init__(self):
 		
+		week_data= db_utils.db_util()
+		
 		self.league_id= 69302
 		self.username= "cmwillis02"
 		self.password= "02guam04"
-		self.year= 2017
+		self.year= week_data.get_current_week()[1]
 		self.proto= "https://"
 		self.host= "www61.myfantasyleague.com/"
 		self.import_url= "{}{}/{}/import".format(self.proto, self.host, self.year)
@@ -53,10 +56,13 @@ class export():
 	def __init__(self):
 		
 		#DRY these should be read from somewhere
+		week_data= db_utils.db_util()
+		
 		self.league_id= 21676
 		self.username= "cmwillis02"
 		self.password= "02guam04"
-		self.year= 2017
+		self.year= week_data.get_current_week()[1]
+		self.week= week_data.get_current_week()[2]
 		self.proto= "https://"
 		self.host= "www61.myfantasyleague.com/"
 		self.export_url= "{}{}{}/export".format(self.proto, self.host, self.year)
@@ -79,19 +85,25 @@ class export():
 		
 		return json_data
 		
-	def game_status(self, week):
-	
+	def game_status(self, player_id):
+		
 		self.login()
 		
 		type= "liveScoring"
-		url= '{}?TYPE={}&L={}&W={}&DETAILS=1&JSON=1'.format(self.export_url, type, self.league_id, week)
+		url= '{}?TYPE={}&L={}&W={}&DETAILS=1&JSON=1'.format(self.export_url, type, self.league_id, self.week)
 		response= self.session.get(url)
 		json_data= json.loads(response.text)
 		
-		return json_data
+		for matchup in range(0,5):
+			game= json_data['liveScoring']['matchup'][matchup]['franchise']
+			for team in range(0,2):
+				players= game[team]['players']['player']
+			
+				for player in players:
+					if int(player['id']) == player_id:	
+						if int(player['gameSecondsRemaining']) < 3600:
+							status= 'locked'
+						else:
+							status= 'unlocked'
 		
-		
-
-
-	
-	
+		return status

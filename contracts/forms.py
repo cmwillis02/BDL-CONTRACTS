@@ -11,13 +11,15 @@ class ContractForm(forms.ModelForm):
 		model = Contract
 		fields = ['years']
     
-	def __init__(self, franchise_id, pk, *args, **kwargs):
+	def __init__(self, status, franchise_id, pk, *args, **kwargs):
 		super(ContractForm, self).__init__(*args, **kwargs)
 		
 		self.franchise_id = franchise_id
+		self.status= status
         
 	def clean_years(self):
 		
+		print (self.status)
 		years= self.cleaned_data['years']
 		
 		franchise_total= Contract.objects.filter(franchise_id= self.franchise_id).filter(current_ind= 'True').aggregate(Sum('years_remaining'))
@@ -25,7 +27,8 @@ class ContractForm(forms.ModelForm):
 		
 		if years <= 0:
 			raise ValidationError('Contract Error: Contracts must be 1 year or more')
-		
+		elif self.status == 'locked':
+			raise ValidationError('Contract Error: This weeks game has already started')
 		elif years + current_roster_years > 50:
 			raise ValidationError('Roster Error:  Contract will put roster over 50 year max')
 		else:

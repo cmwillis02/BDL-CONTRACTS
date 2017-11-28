@@ -46,23 +46,41 @@ class ContractUpdate(View):
 	def get_object(self, pk):
 		
 		return get_object_or_404(self.model, pk= pk)
+			
+	def set_status(self, pk):
 		
+		contract= self.get_object(pk)
+			
+		mfl_obj= mfl_api.export()
+		return mfl_obj.game_status(contract.player_id)
+	
 	def get(self, request, pk):
 		
 		contract= self.get_object(pk)
+		
+		status= self.set_status(pk)
+		
 		self.franchise_id = contract.franchise_id
-		context= {'form' : self.form_class(instance= contract, franchise_id= self.franchise_id, pk= pk) ,  'contract' : contract}
+		context= {'form' : self.form_class(instance= contract,status= status, franchise_id= self.franchise_id, pk= pk) ,  'contract' : contract}
 		
 		return render(request, self.template_name, context)
 		
 	def post(self, request, pk):
+	
+		status= self.set_status(pk)
 		
 		contract= self.get_object(pk)
-		bound_form= self.form_class(contract.franchise_id, request.POST, instance= contract)
-		
+		bound_form= self.form_class(status, contract.franchise_id,pk, request.POST, instance= contract)
+
 		if bound_form.is_valid():
 			contract.years_remaining= contract.years
 			bound_form.save()
+			
+			mfl_obj= db_utils._import()
+			mfl_obj.import_contract(contract.player_id, contract.years)
+			
+			mfl_obj.import_message_board('Contract Years','Player {} assigned new {} year(s) contract'.format(contract.player_id, contract.years))
+			
 			return redirect(reverse('franchise_detail', kwargs= {'pk' : contract.franchise_id}))
 		else:
 			context= {'form': bound_form, 'contract' : contract}
