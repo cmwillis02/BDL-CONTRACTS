@@ -76,12 +76,13 @@ class ContractUpdate(View):
 			contract.years_remaining= contract.years
 			bound_form.save()
 			
-			mfl_obj= db_utils._import()
+			mfl_obj= mfl_api._import()
 			mfl_obj.import_contract(contract.player_id, contract.years)
 			
-			mfl_obj.import_message_board('Contract Years','Player {} assigned new {} year(s) contract'.format(contract.player_id, contract.years))
+			mfl_obj.import_message_board('Contract Years','Player {} assigned new {} year(s) contract'.format(contract.player_id, contract.years, 'current'))
 			
 			return redirect(reverse('franchise_detail', kwargs= {'pk' : contract.franchise_id}))
+			
 		else:
 			context= {'form': bound_form, 'contract' : contract}
 			return render(request, self.template_name, context)
