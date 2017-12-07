@@ -6,7 +6,10 @@ import json
 import sys
 import time
 import datetime
-import mfl_api
+try:
+    import mfl_api
+except:
+    from manage_db import mfl_api
 
 
 
