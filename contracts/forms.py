@@ -19,7 +19,6 @@ class ContractForm(forms.ModelForm):
         
 	def clean_years(self):
 		
-		print (self.status)
 		years= self.cleaned_data['years']
 		
 		franchise_total= Contract.objects.filter(franchise_id= self.franchise_id).filter(current_ind= 'True').aggregate(Sum('years_remaining'))

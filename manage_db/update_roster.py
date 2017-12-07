@@ -6,6 +6,7 @@ import json
 import sys
 import time
 import datetime
+from manage_db import mfl_api
 
 
 
@@ -61,6 +62,24 @@ def close_remaining_contracts(current_contracts, processed_contracts):
 
 		if id not in processed_contracts:
 			close_current_contract(id)
+
+def auto_assign():
+	
+	cur.execute(
+				"SELECT id, player_id FROM contracts_contract WHERE current_ind = 'true' AND years = 0"
+				)
+	results= cur.fetchall()
+	
+	for row in results:
+		mfl_obj= mfl_api.export()
+		status= mfl_obj.game_status(row[1])
+		
+		if status == 'unlocked':
+			continue
+		else:
+			cur.execute(
+						"UPDATE contracts_contract SET years= 1, years_remaining= 1 WHERE id= %s",(row[0])
+						)
 
 
 
@@ -180,6 +199,8 @@ for franchise in range(0,10):
 			contract_entry.update_processed_contract_list()
 
 close_remaining_contracts(current_contracts, processed_contracts)
+# Auto assign contracts to 1 year if players game has started
+auto_assign()
 conn.commit()
 
 # Update job_log table
@@ -187,3 +208,4 @@ cur.execute(
 				'INSERT INTO job_log (job_name, run_date) VALUES (%s, %s)',('Update Rosters', int(time.time()))
 				)
 conn.commit()
+
