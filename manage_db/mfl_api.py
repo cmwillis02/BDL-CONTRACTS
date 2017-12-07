@@ -36,18 +36,15 @@ class _import():
 		
 		r= self.session.post(import_url)
 		
-	def import_message_board(self, thread, body, type):
+	def import_message_board(self, message):
 		"""
 		Deliver message board post to MFL, use type= new to post new thread and type= current to post a new message to a current thread
 		"""
 		
 		req_type= "messageBoard"
 		self.login()
-		
-		if type == 'new':
-			import_url= "{}?TYPE={}&L={}&THREAD=&SUBJECT={}&BODY={}".format(self.import_url, req_type, self.league_id, thread, body)
-		elif type== 'current':
-			import_url= "{}?TYPE={}&L={}&THREAD={}&SUBJECT=&BODY={}".format(self.import_url, req_type, self.league_id, self.contract_thread_id, body)
+
+		import_url= "{}?TYPE={}&L={}&THREAD={}&SUBJECT=&BODY={}".format(self.import_url, req_type, self.league_id, self.contract_thread_id, message)
 		
 		r= self.session.post(import_url)
 

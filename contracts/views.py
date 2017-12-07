@@ -79,7 +79,7 @@ class ContractUpdate(View):
 			mfl_obj= mfl_api._import()
 			mfl_obj.import_contract(contract.player_id, contract.years)
 			
-			mfl_obj.import_message_board('Contract Years','Player {} assigned new {} year(s) contract'.format(contract.player_id, contract.years, 'current'))
+			mfl_obj.import_message_board('Player {} assigned new {} year(s) contract'.format(contract.player_id, contract.years))
 			
 			return redirect(reverse('franchise_detail', kwargs= {'pk' : contract.franchise_id}))
 			
