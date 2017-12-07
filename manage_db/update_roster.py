@@ -6,7 +6,7 @@ import json
 import sys
 import time
 import datetime
-from manage_db import mfl_api
+import mfl_api
 
 
 
@@ -64,16 +64,16 @@ def close_remaining_contracts(current_contracts, processed_contracts):
 			close_current_contract(id)
 
 def auto_assign():
-	
+
 	cur.execute(
 				"SELECT id, player_id FROM contracts_contract WHERE current_ind = 'true' AND years = 0"
 				)
 	results= cur.fetchall()
-	
+
 	for row in results:
 		mfl_obj= mfl_api.export()
 		status= mfl_obj.game_status(row[1])
-		
+
 		if status == 'unlocked':
 			continue
 		else:
@@ -133,7 +133,7 @@ class contract(object):
 		# All new contracts should be default assigned to 0 years by MFL.  This will allow traded contracts not to show up on pending assignment
 		if self.status == 'New':
 			self.years= 0
-		
+
 		cur.execute(
 					'INSERT INTO contracts_contract (current_ind, roster_status, date_assigned, franchise_id, player_id, years, years_remaining) VALUES (%s, %s, %s, %s, %s, %s, %s)',('true', ir, datetime.date.today(), self.franchise_id, self.player_id, self.years, self.years)
 					)
@@ -144,14 +144,14 @@ class contract(object):
 
 		if self.current_contract_id != None:
 			processed_contracts.append(self.current_contract_id)
-			
+
 	def set_ir(self):
 		#Check and set IR status (i= IR, a= ACTIVE)
-		
+
 		cur.execute(
 					"UPDATE contracts_contract SET roster_status = %s WHERE id = %s",(self.ir, self.current_contract_id)
 					)
-		
+
 
 
 
@@ -183,7 +183,7 @@ for franchise in range(0,10):
 
 		# -- Process each contract entry according to status
 		if contract_entry.status == 'Current':
-			
+
 			contract_entry.set_ir()
 			contract_entry.update_processed_contract_list()
 
