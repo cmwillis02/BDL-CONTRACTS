@@ -94,13 +94,28 @@ class export():
 		response= self.session.get(url)
 		json_data= json.loads(response.text)
 		
-		for matchup in range(0,5):
+		if self.week in [14,15,16]:
+			matchups= 2
+		else:
+			matchups= 5
+		
+		for matchup in range(0,matchups):
 			game= json_data['liveScoring']['matchup'][matchup]['franchise']
 			for team in range(0,2):
 				players= game[team]['players']['player']
-			
+	
 				for player in players:
 					if int(player['id']) == player_id:	
+						if int(player['gameSecondsRemaining']) < 3600:
+							status= 'locked'
+						else:
+							status= 'unlocked'
+										
+		if self.week in [14,15,16]:
+			for team in range(0,6):
+				players= json_data['liveScoring']['franchise'][team]['players']['player']
+				for player in players:
+					if int(player['id']) == player_id:
 						if int(player['gameSecondsRemaining']) < 3600:
 							status= 'locked'
 						else:
