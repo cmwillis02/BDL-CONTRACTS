@@ -35,7 +35,7 @@
     	
     	{% for player in active_players %}
     	
-    	<li> <a href= " {% url 'player_detail' player.player.player_id %}"> {{ player.player.name }}</a> {{ player.player.get_position_display }} - {{ player.years_remaining}}</li>
+    	<li> <a href= " {% url 'player_contract_detail' player.player.player_id %}"> {{ player.player.name }}</a> {{ player.player.get_position_display }} - {{ player.years_remaining}}</li>
     	 
     	{% endfor %}
     		
@@ -46,7 +46,7 @@
     	
     	{% for player in ir %}
     	
-    	<li> <a href= " {%url 'player_detail' player.player.player_id %}"> {{player.player.name}}</a> {{ player.player.get_position_display }} - {{ player.years_remaining }}</li>
+    	<li> <a href= " {%url 'player_contract_detail' player.player.player_id %}"> {{player.player.name}}</a> {{ player.player.get_position_display }} - {{ player.years_remaining }}</li>
     	
     	{% endfor %}
 

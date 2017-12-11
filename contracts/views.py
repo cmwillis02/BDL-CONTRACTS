@@ -12,7 +12,7 @@ def franchise_list(request):
 	franchises= Franchise.objects.all()
 	return render(request,'contracts/franchise_list.html',{'franchises': franchises} )
 
-def franchise_detail(request, pk):
+def franchise_contract_detail(request, pk):
     
     franchise = get_object_or_404(Franchise, pk= pk)
     active= Contract.objects.filter(current_ind= 'True').filter(franchise_id= pk).exclude(years_remaining= 0).exclude(roster_status= 'i').order_by('years_remaining')
@@ -28,13 +28,13 @@ def franchise_detail(request, pk):
     if ir_count > 3:
     	roster_check.append('Cannot assign contracts with > 3 IR players')
     
-    return render(request, 'contracts/franchise_detail.html', {'franchise': franchise, 'active_players': active, 'pending_players' : pending, 'ir' : ir, 'roster_check' : roster_check})	
+    return render(request, 'contracts/franchise_contract_detail.html', {'franchise': franchise, 'active_players': active, 'pending_players' : pending, 'ir' : ir, 'roster_check' : roster_check})	
     
-def player_detail(request, pk):
+def player_contract_detail(request, pk):
 	
 	contract = Contract.objects.filter(player_id = pk).order_by('-id')[0]
 	
-	return render(request, 'contracts/player_detail.html', {'contract' : contract})
+	return render(request, 'contracts/player_contract_detail.html', {'contract' : contract})
 	
 class ContractUpdate(View):
 	
