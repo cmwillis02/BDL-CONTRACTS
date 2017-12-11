@@ -81,7 +81,7 @@ def auto_assign():
 			continue
 		else:
 			cur.execute(
-						"UPDATE contracts_contract SET years= 1, years_remaining= 1 WHERE id= %s",(row[0])
+						"UPDATE contracts_contract SET years= 1, years_remaining= 1 WHERE id= %s",(row[0],)
 						)
 
 
