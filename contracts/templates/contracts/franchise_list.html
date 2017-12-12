@@ -1,14 +1,14 @@
 {% extends 'contracts/base.html' %}
 
 {% block title %}
-<title> Franchise List </title>
+<title> Contracts </title>
 {% endblock %}
 
 {% block content %}
 
 	<h1><strong> Franchise List </strong></h1>
 	{% for franchise in franchises %}
-		<h2> <a href="{% url 'franchise_detail' pk=franchise.pk %}">{{franchise.team_name}}</a> ({{franchise.owner_name}})</h2>
+		<h2> <a href="{% url 'franchise_contract_detail' pk=franchise.pk %}">{{franchise.team_name}}</a> ({{franchise.owner_name}})</h2>
 
     {% endfor %}
 {% endblock %}
