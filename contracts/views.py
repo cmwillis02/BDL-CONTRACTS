@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Franchise, Player, Contract
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import View
+from django.views.generic import View, RedirectView
 from .forms import ContractForm
 from django.urls import reverse
 from manage_db import mfl_api
@@ -86,5 +86,7 @@ class ContractUpdate(View):
 		else:
 			context= {'form': bound_form, 'contract' : contract}
 			return render(request, self.template_name, context)
+			
+
 		
 	
