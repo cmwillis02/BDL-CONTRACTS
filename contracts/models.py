@@ -3,6 +3,7 @@ import uuid
 from datetime import date
 import datetime
 from django.urls import reverse
+from django.db.models import Sum, Count
 
 # Create your models here.
 
@@ -46,6 +47,18 @@ class Franchise(models.Model):
 	def get_absolute_url(self):
 		
 		return reverse('franchise_detail', args= [str(self.franchise_id)])
+		
+	def get_player_count(self):
+	
+		players= Contract.objects.filter(franchise_id= self.franchise_id).filter(current_ind= True).count()
+		
+		return players
+	
+	def get_years_remaining(self):
+		
+		years= Contract.objects.filter(franchise_id= self.franchise_id).filter(current_ind= True).aggregate(Sum('years_remaining'))
+		
+		return years['years_remaining__sum']
 		
 	
 class Player(models.Model):
@@ -123,6 +136,8 @@ class Franchise_fact(models.Model):
 	def __str__(self):
 		
 		return '%s (%s)' % (self.franchise.team_name, self.week.week_id)
+		
+
 	
 class Week(models.Model):
 	"""

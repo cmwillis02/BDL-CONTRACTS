@@ -5,10 +5,21 @@
 {% endblock %}
 
 {% block content %}
-
 	<h1><strong> Franchise List </strong></h1>
-	{% for franchise in franchises %}
-		<h2> <a href="{% url 'franchise_contract_detail' pk=franchise.pk %}">{{franchise.team_name}}</a> ({{franchise.owner_name}})</h2>
-
+	
+	<div>
+		<div class= "row">
+			<div class= "col-3"> Team </div>
+			<div class= "col-3"> Owner </div>
+			<div class= "col-3"> Total Players </div>
+			<div class= "col-3"> Contract Years </div>
+		</div>
+		{% for franchise in franchises %}
+		<div class= "row">
+			<div class= "col-3"> <h2> <a href="{% url 'franchise_contract_detail' pk=franchise.pk %}">{{franchise.team_name}}</a></h2></div>
+			<div class= "col-3"> {{franchise.owner_name}} </div>
+			<div class= "col-3"> {{franchise.get_player_count}}</div>
+			<div class= "col-3"> {{franchise.get_years_remaining}}</div>
+	</div>
     {% endfor %}
 {% endblock %}
