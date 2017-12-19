@@ -18,8 +18,8 @@
 		<div class= "row">
 			<div class= "col-3"> <h2> <a href="{% url 'franchise_contract_detail' pk=franchise.pk %}">{{franchise.team_name}}</a></h2></div>
 			<div class= "col-3"> {{franchise.owner_name}} </div>
-			<div class= "col-3"> {{franchise.get_player_count}}</div>
-			<div class= "col-3"> {{franchise.get_years_remaining}}</div>
+			<div class= "col-3"> {{franchise.total_players}}</div>
+			<div class= "col-3"> {{franchise.total_years}}</div>
 	</div>
     {% endfor %}
 {% endblock %}

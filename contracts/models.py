@@ -47,18 +47,113 @@ class Franchise(models.Model):
 	def get_absolute_url(self):
 		
 		return reverse('franchise_detail', args= [str(self.franchise_id)])
-		
-	def get_player_count(self):
 	
-		players= Contract.objects.filter(franchise_id= self.franchise_id).filter(current_ind= True).count()
-		
-		return players
+	#--- All get_<> methods are only for use in other methods, not in templates ---#
+	def get_count(self, players):
 	
-	def get_years_remaining(self):
+		count= players.count()
+		return count
+	
+	def get_years(self, players):
 		
-		years= Contract.objects.filter(franchise_id= self.franchise_id).filter(current_ind= True).aggregate(Sum('years_remaining'))
-		
+		years= players.aggregate(Sum('years_remaining'))
 		return years['years_remaining__sum']
+		
+	def get_position_years(self, position):
+		
+		players= Contract.objects.filter(franchise_id= self.franchise_id).filter(current_ind= True).filter(player__position= position)
+		years= self.get_years(players)
+		
+		return years
+		
+	def get_position_count(self, position):
+		
+		players= Contract.objects.filter(franchise_id= self.franchise_id).filter(current_ind= True).filter(player__position= position)
+		count= self.get_count(players)
+		
+		return count
+	
+	#--- Methods to be used in templates and views ---#
+	def total_years(self):
+		
+		players= Contract.objects.filter(franchise_id= self.franchise_id).filter(current_ind= True)
+		years= self.get_years(players)
+		
+		return years
+		
+	def total_players(self):
+		
+		players= Contract.objects.filter(franchise_id= self.franchise_id).filter(current_ind= True)
+		count= self.get_count(players)
+		
+		return count
+
+	def qb_count(self):
+		
+		count= self.get_position_count('q')
+		return count
+	
+	def qb_years(self):
+		
+		years= self.get_position_years('q')
+		
+		return years
+		
+	def rb_count(self):
+		
+		count= self.get_position_count('r')
+		return count
+	
+	def rb_years(self):
+		
+		years= self.get_position_years('r')
+		
+		return years
+		
+	def wr_count(self):
+		
+		count= self.get_position_count('w')
+		return count
+	
+	def wr_years(self):
+		
+		years= self.get_position_years('w')
+		
+		return years
+		
+	def te_count(self):
+		
+		count= self.get_position_count('t')
+		return count
+	
+	def te_years(self):
+		
+		years= self.get_position_years('t')
+		
+		return years
+		
+	def def_count(self):
+		
+		count= self.get_position_count('d')
+		return count
+	
+	def def_years(self):
+		
+		years= self.get_position_years('d')
+		
+		return years
+		
+	def k_count(self):
+		
+		count= self.get_position_count('k')
+		return count
+	
+	def k_years(self):
+		
+		years= self.get_position_years('k')
+		
+		return years
+		
 		
 	
 class Player(models.Model):

@@ -7,48 +7,159 @@
 {% block content %}
     <div>
         <h1>{{ franchise.team_name}} </h1>
-        <p>{{franchise.owner_name}} {{franchise.owner_email}}</p>
+        <p>{{franchise.owner_name}}  -  {{franchise.owner_email}}</p>
         
         {% for message in roster_check %}
         	<li> {{message}} </li>
         {% endfor %}
-        
     </div>
-        <button type= "submit"> Refresh Roster </button>
+    
+    <div class= "table-responsive">
+    	<table class= "table table-striped">
+    	 	<thead>
+    			<tr>
+    				<th> Position </th>
+    				<th> Players </th>
+    				<th> Years </th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			<tr>
+    				<td> QB </td>
+    				<td> {{franchise.qb_count}} </td>
+    				<td> {{franchise.qb_years}} </td>
+    			</tr>
+    			<tr>
+    				<td> RB </td>
+    				<td> {{franchise.rb_count}} </td>
+    				<td> {{franchise.rb_years}} </td>
+    			</tr>
+    			<tr>
+    				<td> WR </td>
+    				<td> {{franchise.wr_count}} </td>
+    				<td> {{franchise.wr_years}} </td>
+    			</tr>
+    			<tr>
+    				<td> TE </td>
+    				<td> {{franchise.te_count}} </td>
+    				<td> {{franchise.te_years}} </td>
+    			</tr>
+    			<tr>
+    				<td> DEF </td>
+    				<td> {{franchise.def_count}} </td>
+    				<td> {{franchise.def_years}} </td>
+    			</tr>
+    			<tr>
+    				<td> PK </td>
+    				<td> {{franchise.k_count}} </td>
+    				<td> {{franchise.k_years}} </td>
+    			</tr>
+    		</tbody>
+    	</table>
+    </div>
+
     <div>
     	<h2> Pending Contracts </h2>  		
     </div>
-    	{% for player in pending_players %}
-    	
-    	{% if roster_check %}
-    		<li> {{ player.player.name }}  {{player.player.get_position_display}} </li>
-    	
-    	{% else %}
-    		<li> <a href= "{{ player.get_update_url }}"> {{ player.player.name }} </a> {{ player.player.get_position_display }} - </li>
-    	
-    	{% endif %}
-    	{% endfor %}
     
+    {% if pending_players %}
+    
+    <div class= "table-responsive">
+    	<table class= "table table-striped">
+    		<thead>
+    			<tr>
+    				<th> Name </th>
+    				<th> Position </th>
+    				<th> Years </th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    		
+    		{% for player in pending_players %}
+    			{% if roster_check %}
+    			
+    			<tr>
+    				<td> {{player.player.name}} </td>
+    				<td> {{player.player.get_position_display}} </td>
+    				<td> </td>
+    			</tr>
+    			
+    			{% else %}
+    			
+    			<tr>
+    				<td> <a href= "{{ player.get_update_url }}"> {{ player.player.name }} </a> </td>
+    				<td> {{player.player.get_position_display}} </td>
+    				<td> </td>
+    			</tr>
+    			
+    			{% endif %}
+    		{% endfor %}
+    		</tbody>
+    	</table>
+    </div>
+    
+    {% else %}
+    	
+    <p> No contracts pending assignment </p>
+    		
+	{% endif %}
     
     <div>
     	<h2> Active Contracts </h2>
     </div>
-    <div>
-    	{% for player in active_players %}
-    	
-    	<li> <a href= " {% url 'player_contract_detail' player.player.player_id %}"> {{ player.player.name }}</a> {{ player.player.get_position_display }} - {{ player.years_remaining}}</li>
-    	 
-    	{% endfor %}
+    
+	<div class= "table-responsive">
+    	<table class= "table table-striped">
+    		<thead>
+    			<tr>
+    				<th> Name </th>
+    				<th> Position </th>
+    				<th> Years </th>
+    			</tr>
+    		</thead>
+    		<tbody>
     		
+    		{% for player in active_players %}	
+    			
+    			<tr>
+    				<td> <a href= "{{ player.get_update_url }}"> {{ player.player.name }} </a> </td>
+    				<td> {{player.player.get_position_display}} </td>
+    				<td> {{player.years_remaining}} </td>
+    			</tr>
+    			
+    		{% endfor %}
+    		
+    		</tbody>
+    	</table>
     </div>
     
-    <div>
-    	<h2> Injured Reserve </h2>
-    	
-    	{% for player in ir %}
-    	
-    	<li> <a href= " {%url 'player_contract_detail' player.player.player_id %}"> {{player.player.name}}</a> {{ player.player.get_position_display }} - {{ player.years_remaining }}</li>
-    	
-    	{% endfor %}
+	<div>
+		<h2> Injured Reserve </h2>
+    </div>
+    
+	<div class= "table-responsive">
+    	<table class= "table table-striped">
+    		<thead>
+    			<tr>
+    				<th> Name </th>
+    				<th> Position </th>
+    				<th> Years </th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    		
+    		{% for player in ir %}	
+    			
+    			<tr>
+    				<td> <a href= "{{ player.get_update_url }}"> {{ player.player.name }} </a> </td>
+    				<td> {{player.player.get_position_display}} </td>
+    				<td> {{player.years_remaining}} </td>
+    			</tr>
+    			
+    		{% endfor %}
+    		
+    		</tbody>
+    	</table>
+    </div>
 
 {% endblock %}

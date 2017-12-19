@@ -10,6 +10,9 @@ from manage_db import mfl_api
 def franchise_list(request):
 	
 	franchises= Franchise.objects.all()
+	
+	from manage_db import update_roster
+	
 	return render(request,'contracts/franchise_list.html',{'franchises': franchises} )
 
 def franchise_contract_detail(request, pk):
@@ -81,7 +84,7 @@ class ContractUpdate(View):
 			
 			mfl_obj.import_message_board('Player {} assigned new {} year(s) contract'.format(contract.player_id, contract.years))
 			
-			return redirect(reverse('franchise_detail', kwargs= {'pk' : contract.franchise_id}))
+			return redirect(reverse('franchise_contract_detail', kwargs= {'pk' : contract.franchise_id}))
 			
 		else:
 			context= {'form': bound_form, 'contract' : contract}
