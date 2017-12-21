@@ -5,9 +5,15 @@ from django.views.generic import View, RedirectView
 from .forms import ContractForm
 from django.urls import reverse
 from manage_db import mfl_api
+from manage_db import manage_rosters
 
 	
 def franchise_list(request):
+
+	api= mfl_api.export()
+
+	process= manage_rosters.contract_process(api.rosters())
+	process.main_process()
 	
 	franchises= Franchise.objects.all()
 	

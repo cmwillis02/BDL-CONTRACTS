@@ -31,7 +31,7 @@ class contract_process(object):
 			
 		# Lists used to close contracts that are not new or recently processed
 		self.cur.execute(
-				'SELECT player_id, franchise_id, id FROM contract_test WHERE current_ind = true'
+				'SELECT player_id, franchise_id, id FROM contracts_contract WHERE current_ind = true'
 				)
 		
 		self.starting_contracts = self.cur.fetchall()
@@ -99,13 +99,13 @@ class contract_process(object):
 	def set_status(self, player_id, franchise_id):
 	
 		self.cur.execute(
-						"SELECT id FROM contract_test WHERE player_id= %s AND franchise_id= %s AND current_ind= 'Y'",(player_id, franchise_id)
+						"SELECT id FROM contracts_contract WHERE player_id= %s AND franchise_id= %s AND current_ind= 'Y'",(player_id, franchise_id)
 						)
 		result= self.cur.fetchone()
 						
 		if result is None:
 			self.cur.execute(
-							"SELECT id FROM contract_test WHERE player_id= %s AND current_ind= 'Y'", (player_id,)
+							"SELECT id FROM contracts_contract WHERE player_id= %s AND current_ind= 'Y'", (player_id,)
 							)
 			result= self.cur.fetchone()
 			if result is None:
@@ -123,10 +123,10 @@ class contract_process(object):
 	def new_contract(self, player_id, franchise_id, years, ir):
 	
 		self.cur.execute(
-						"INSERT INTO contract_test (current_ind, roster_status, date_assigned, franchise_id, player_id, years, years_remaining) VALUES (%s, %s, %s, %s, %s, %s, %s)", ('true', ir, datetime.date.today(), franchise_id, player_id, years, years)
+						"INSERT INTO contracts_contract (current_ind, roster_status, date_assigned, franchise_id, player_id, years, years_remaining) VALUES (%s, %s, %s, %s, %s, %s, %s)", ('true', ir, datetime.date.today(), franchise_id, player_id, years, years)
 						)
 		self.cur.execute(
-						"SELECT max(id) FROM contract_test"
+						"SELECT max(id) FROM contracts_contract"
 						)
 		id= self.cur.fetchone()[0]
 		self.processed_contracts.append(id)
@@ -134,12 +134,12 @@ class contract_process(object):
 	def set_ir(self, ir, id):
 		
 		self.cur.execute(
-						"UPDATE contract_test SET roster_status = %s WHERE id= %s",(ir, id)
+						"UPDATE contracts_contract SET roster_status = %s WHERE id= %s",(ir, id)
 						)
 						
 	def close_contract(self, contract_id):
 		
 		today= datetime.date.today()
 		self.cur.execute(
-						"UPDATE contract_test SET current_ind = 'false', date_terminated= %s, years_remaining= %s, roster_status= %s WHERE id= %s",(today, None, None, contract_id)
+						"UPDATE contracts_contract SET current_ind = 'false', date_terminated= %s, years_remaining= %s, roster_status= %s WHERE id= %s",(today, None, None, contract_id)
 						)
