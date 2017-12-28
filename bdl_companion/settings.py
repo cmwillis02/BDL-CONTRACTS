@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'contracts.apps.ContractsConfig',
+    'history.apps.HistoryConfig',
 ]
 
 MIDDLEWARE = [

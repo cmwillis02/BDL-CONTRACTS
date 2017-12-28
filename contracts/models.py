@@ -180,7 +180,7 @@ class Player(models.Model):
 		
 		return self.name
 		
-class Player_fact(models.Model):
+class fact_player(models.Model):
 	"""
 	Model representing player_fact table, one entry per player per week
 	"""
@@ -202,14 +202,14 @@ class Player_fact(models.Model):
 	
 		return '%s (%s)' % (self.player.name, self.week.week_id)
 	
-class Franchise_fact(models.Model):
+class fact_franchise(models.Model):
 	"""
 	Model representing franchise_fact, one entry per team per week
 	"""
 	
 	franchise= models.ForeignKey('Franchise', on_delete= models.CASCADE)
 	week= models.ForeignKey('Week', on_delete= models.CASCADE)
-	opponent= models.ForeignKey('Franchise', on_delete= models.CASCADE, related_name= 'Franchise', null= True)
+	opponent= models.ForeignKey('Franchise', on_delete= models.CASCADE, related_name= 'opponent', null= True)
 	
 	matchup_type= (
 			('p', 'Playoffs'),

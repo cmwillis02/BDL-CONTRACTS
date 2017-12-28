@@ -57,7 +57,7 @@ def import_player_scores(server, year, week, league_id, week_id):
         player_id = item["id"]
 
         cur.execute(
-        			"INSERT INTO contracts_player_fact (player_id, week_id, roster_status, score) VALUES (%s, %s, %s, %s)", (player_id, week_id, status,  score)
+        			"INSERT INTO history_player_fact (player_id, week_id, roster_status, score) VALUES (%s, %s, %s, %s)", (player_id, week_id, status,  score)
         			)
 
 def weekly_results_players(players, year, week, franchise_id):
@@ -73,14 +73,14 @@ def weekly_results_players(players, year, week, franchise_id):
 			score= 0
 
 			cur.execute(
-						"INSERT INTO contracts_player_fact (week_id, player_id, franchise_id, score, roster_status) VALUES (%s, %s, %s, %s, %s)", (week_id, player_id, franchise_id, score, status)
+						"INSERT INTO history_player_fact (week_id, player_id, franchise_id, score, roster_status) VALUES (%s, %s, %s, %s, %s)", (week_id, player_id, franchise_id, score, status)
 						)
 
 		else:
 			score= float(player["score"])
 
 			cur.execute(
-						"UPDATE contracts_player_fact SET franchise_id = %s, roster_status = %s WHERE player_id = %s AND week_id = %s", (int(franchise_id), status, player_id, week_id)
+						"UPDATE history_player_fact SET franchise_id = %s, roster_status = %s WHERE player_id = %s AND week_id = %s", (int(franchise_id), status, player_id, week_id)
 						)
 			conn.commit()
 
@@ -122,12 +122,12 @@ def import_weekly_results(server, year, week, league_id):
 			weekly_results_players(players, year, week, franchise_id)
 
 			cur.execute(
-						"SELECT sum(score) FROM contracts_player_fact WHERE week_id = %s AND franchise_id = %s AND roster_status = 's'", (week_id, franchise_id)
+						"SELECT sum(score) FROM history_player_fact WHERE week_id = %s AND franchise_id = %s AND roster_status = 's'", (week_id, franchise_id)
 						)
 			score= cur.fetchone()[0]
 
 			cur.execute(
-						"INSERT INTO contracts_franchise_fact (franchise_id, week_id, result, matchup_type, total_score) VALUES (%s, %s, %s, %s, %s)", (franchise_id, week_id, result.lower(), 'r', score)
+						"INSERT INTO history_franchise_fact (franchise_id, week_id, result, matchup_type, total_score) VALUES (%s, %s, %s, %s, %s)", (franchise_id, week_id, result.lower(), 'r', score)
 						)
 			conn.commit()
 
@@ -148,7 +148,7 @@ def set_matchups(matchup_list):
 				continue
 
 		cur.execute(
-					"UPDATE contracts_franchise_fact SET opponent_id = %s, opponent_score = %s WHERE franchise_id = %s AND week_id = %s", (opponent_id, opponent_score, team_id, week_id)
+					"UPDATE history_franchise_fact SET opponent_id = %s, opponent_score = %s WHERE franchise_id = %s AND week_id = %s", (opponent_id, opponent_score, team_id, week_id)
 					)
 		conn.commit()
 
@@ -164,12 +164,12 @@ def import_bye_weeks(server, year, week, league_id):
 		weekly_results_players(players, year, week, franchise_id)
 
 		cur.execute(
-						"SELECT sum(score) FROM contracts_player_fact WHERE week_id = %s AND franchise_id = %s AND roster_status = 's'", (week_id, franchise_id)
+						"SELECT sum(score) FROM history_player_fact WHERE week_id = %s AND franchise_id = %s AND roster_status = 's'", (week_id, franchise_id)
 						)
 		score= cur.fetchone()[0]
 
 		cur.execute(
-					"INSERT INTO contracts_franchise_fact (franchise_id, week_id, matchup_type, total_score) VALUES (%s, %s, %s, %s)", (franchise_id, week_id, 'b', score)
+					"INSERT INTO history_franchise_fact (franchise_id, week_id, matchup_type, total_score) VALUES (%s, %s, %s, %s)", (franchise_id, week_id, 'b', score)
 					)
 		conn.commit()
 
