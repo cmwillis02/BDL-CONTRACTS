@@ -1,6 +1,7 @@
 #!/usr/bin/python3.6
 
 import psycopg2
+import sys
 
 class db_util():
 
