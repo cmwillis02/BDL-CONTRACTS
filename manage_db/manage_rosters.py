@@ -38,7 +38,7 @@ class contract_process(object):
 		self.processed_contracts= []
 		
 	def main_process(self):
-		print ('MP1')
+
 		for franchise in range(0,10):
 			
 			franchise_id= franchise + 1

@@ -141,7 +141,7 @@ class export():
 		self.login()
 		
 		type= 'rosters'
-
+		
 		url='{}?TYPE={}&L={}&APIKEY=&FRANCHISE=&JSON=1'.format(self.export_url, type, self.league_id)
 		response= self.session.get(url)
 		json_data= json.loads(response.text)
