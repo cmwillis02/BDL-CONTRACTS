@@ -1,7 +1,7 @@
 import psycopg2
 import sys
 
-# --- DATABASE CONNECTION --- #     
+# --- DATABASE CONNECTION --- #
 
 dsn_database= 'CORE'
 dsn_hostname= 'bdlcompanion.cquxuyvkuxqs.us-east-1.rds.amazonaws.com'
@@ -18,7 +18,7 @@ try:
 except:
 	print ('Unable to connect')
 	sys.exit(1)
-	
+
 playoff_list = [
 					(200914,6,5),
 					(200914,10,8),
@@ -68,13 +68,13 @@ playoff_list = [
 					]
 
 for row in playoff_list:
-	
+
 	cur.execute(
 				"UPDATE contracts_franchise_fact SET matchup_type = %s WHERE week_id = %s AND franchise_id = %s", ('p', row[0], row[1])
 				)
-	
+
 	cur.execute(
 				"UPDATE contracts_franchise_fact SET matchup_type = %s WHERE week_id = %s and franchise_id = %s", ('p', row[0], row[2])
 				)
-	
+
 conn.commit()
