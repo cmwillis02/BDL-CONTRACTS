@@ -9,9 +9,9 @@ import time
 
 # Program only runs on tuesdays during the season
 
-if datetime.datetime.today().weekday() != 1:
-	print ("Fact tables only update on tuesdays")
-	sys.exit(0)
+#if datetime.datetime.today().weekday() != 1:
+#	print ("Fact tables only update on tuesdays")
+#	sys.exit(0)
 
 
 # --- DATABASE CONNECTION --- #
@@ -182,8 +182,8 @@ cur.execute(
 			)
 run_week= cur.fetchall()
 
-if run_week is None:
-	print ('No run week found, all available weeks have been run')
+if run_week[0][2] == 99:
+	print ('Offseason Mode- No weeks to run')
 	sys.exit(0)
 
 week_id= run_week[0][0]
