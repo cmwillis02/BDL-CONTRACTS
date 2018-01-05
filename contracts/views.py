@@ -9,15 +9,8 @@ from manage_db import manage_rosters
 
 	
 def franchise_list(request):
-
-	api= mfl_api.export()
-
-	process= manage_rosters.contract_process(api.rosters())
-	process.main_process()
 	
 	franchises= Franchise.objects.all()
-	
-	from manage_db import update_roster
 	
 	return render(request,'contracts/franchise_list.html',{'franchises': franchises} )
 

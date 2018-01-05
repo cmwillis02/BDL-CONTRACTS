@@ -26,10 +26,9 @@ class db_util():
 			sys.exit(1)
 			
 	def get_current_week(self):
-	
+		
 		cur= self.connect()
 		
 		cur.execute("SELECT week_id, year, week FROM contracts_week WHERE run_status= 0 AND week_id= (SELECT min(week_id) FROM contracts_week WHERE run_status= 0)")
-		
 		return cur.fetchall()[0]
 		

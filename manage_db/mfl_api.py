@@ -88,48 +88,51 @@ class export():
 	def game_status(self, player_id):
 
 		self.login()
+		
+		if self.week == 99:
+			status= 'locked'
 
-		type= "liveScoring"
-		url= '{}?TYPE={}&L={}&W={}&DETAILS=1&JSON=1'.format(self.export_url, type, self.league_id, self.week)
-		response= self.session.get(url)
-		json_data= json.loads(response.text)
-	
-	
-		if self.week == 14:
-			matchups= 4
-		elif self.week == 15:
-			matchups= 3
-		elif self.week == 16:
-			matchups= 2
-		elif self.week == 17:
-			matchups= 0
 		else:
-			matchups= 5
+			type= "liveScoring"
+			url= '{}?TYPE={}&L={}&W={}&DETAILS=1&JSON=1'.format(self.export_url, type, self.league_id, self.week)
+			response= self.session.get(url)
+			json_data= json.loads(response.text)
+			
+			if self.week == 14:
+				matchups= 4
+			elif self.week == 15:
+				matchups= 3
+			elif self.week == 16:
+				matchups= 2
+			elif self.week == 17:
+				matchups= 0
+			else:
+				matchups= 5
 
-		for matchup in range(0,matchups):
-			game= json_data['liveScoring']['matchup'][matchup]['franchise']
-			for team in range(0,2):
-				players= game[team]['players']['player']
-				for player in players:
-					if int(player['id']) == player_id:
-						if int(player['gameSecondsRemaining']) < 3600:
-							status= 'locked'
-						else:
-							status= 'unlocked'
-                            
-		if self.week in [14,15,16]:
-			teams= 10-(matchups * 2)
-			for team in range(0,teams):
-				players= json_data['liveScoring']['franchise'][team]['players']['player']
-				for player in players:
-					if int(player['id']) == player_id:
-						if int(player['gameSecondsRemaining']) < 3600:
-							status= 'locked'
-						else:
-							status= 'unlocked'
+			for matchup in range(0,matchups):
+				game= json_data['liveScoring']['matchup'][matchup]['franchise']
+				for team in range(0,2):
+					players= game[team]['players']['player']
+					for player in players:
+						if int(player['id']) == player_id:
+							if int(player['gameSecondsRemaining']) < 3600:
+								status= 'locked'
+							else:
+								status= 'unlocked'
 							
-		if self.week == 17:
-			status= 'unlocked'
+			if self.week in [14,15,16]:
+				teams= 10-(matchups * 2)
+				for team in range(0,teams):
+					players= json_data['liveScoring']['franchise'][team]['players']['player']
+					for player in players:
+						if int(player['id']) == player_id:
+							if int(player['gameSecondsRemaining']) < 3600:
+								status= 'locked'
+							else:
+								status= 'unlocked'
+							
+			if self.week == 17:
+				status= 'locked'
 		
 		return status
         
@@ -142,5 +145,6 @@ class export():
 		url='{}?TYPE={}&L={}&APIKEY=&FRANCHISE=&JSON=1'.format(self.export_url, type, self.league_id)
 		response= self.session.get(url)
 		json_data= json.loads(response.text)
+		
         
 		return json_data

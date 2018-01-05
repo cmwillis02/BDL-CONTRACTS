@@ -27,7 +27,7 @@ class ContractForm(forms.ModelForm):
 		if years <= 0:
 			raise ValidationError('Contract Error: Contracts must be 1 year or more')
 		elif self.status == 'locked':
-			raise ValidationError('Contract Error: This weeks game has already started')
+			raise ValidationError('Contract Error: Player is currently locked')
 		elif years + current_roster_years > 50:
 			raise ValidationError('Roster Error:  Contract will put roster over 50 year max')
 		else:
