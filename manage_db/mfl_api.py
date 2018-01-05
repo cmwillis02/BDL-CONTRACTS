@@ -93,7 +93,8 @@ class export():
 		url= '{}?TYPE={}&L={}&W={}&DETAILS=1&JSON=1'.format(self.export_url, type, self.league_id, self.week)
 		response= self.session.get(url)
 		json_data= json.loads(response.text)
-
+	
+	
 		if self.week == 14:
 			matchups= 4
 		elif self.week == 15:
@@ -126,6 +127,10 @@ class export():
 							status= 'locked'
 						else:
 							status= 'unlocked'
+							
+		if self.week == 17:
+			status= 'unlocked'
+		
 		return status
         
 	def rosters(self):
