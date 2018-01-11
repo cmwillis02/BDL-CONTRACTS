@@ -53,3 +53,23 @@ class franchise_fact(models.Model):
 	def __str__(self):
 		
 		return '%s (%s)' % (self.franchise.team_name, self.week.week_id)
+		
+class player_milestones(models.Model):
+	"""
+	Model representing individual player milestones.
+	"""
+	
+	player= models.ForeignKey('contracts.Player', on_delete= models.CASCADE)
+	type= models.CharField(max_length= 100)
+	week= models.ForeignKey('contracts.Week', on_delete= models.CASCADE)
+	
+class player_awards(models.Model):
+	"""
+	Model representing winners of MVP, ROY, Pro-Bowl and All-BDL
+	"""
+	
+	player= models.ForeignKey('contracts.Player', on_delete= models.CASCADE)
+	type= models.CharField(max_length= 100)
+	year= models.IntegerField()
+	
+

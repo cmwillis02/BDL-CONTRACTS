@@ -29,6 +29,10 @@ class Contract(models.Model):
 		
 		return reverse('update_contract', kwargs= {'pk' : self.pk})
 	
+	def get_detail_url(self):
+		
+		return reverse('player_contract_detail', kwargs= {'pk' : self.pk})
+	
 		
 class Franchise(models.Model):
 	"""

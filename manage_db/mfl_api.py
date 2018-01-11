@@ -148,3 +148,15 @@ class export():
 		
         
 		return json_data
+		
+	def transactions(self):
+	
+		self.login()
+		
+		type= 'transactions'
+		days= 365
+		trans_type= 'WAIVER'
+		week= 10
+		
+		url= '{}?TYPE={}&L={}&APIKEY=&W={}TRANS_TYPE={}&FRANCHISE=&DAYS={}&COUNT=&JSON=1'.format(self.export_url, self.league_id, week, type, trans_type, days)
+		print (url)
