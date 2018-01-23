@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -87,6 +89,39 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+from .log_filters import ManagementFilter
+
+verbose= (	"[%(asctime)s] %(levelname)s "
+		  	"[%name)s:%(lineno)s] %(messages)s")
+		  	
+LOGGING = {
+			'version' : 1,
+			'disable_existing_loggers' : False,
+			'filters' : {
+							'remove_migration_sql' : {
+														'()' : ManagementFilter,
+													},
+						},
+			'handlers' : {
+							'console' : {
+											'class' : 'logging.StreamHandler',
+											},
+							},
+			'formatters' : {
+							'verbose': {
+								'format' : verbose,
+								'datefmt': "%Y-%b-%d %H:%M:%S"
+										},
+							},
+			'loggers' : {
+							'django' : {
+										'handlers' : ['console'],
+										'level' : 'DEBUG',
+										'formatter' : 'verbose'
+										},
+						},
+			}
 
 
 # Password validation
