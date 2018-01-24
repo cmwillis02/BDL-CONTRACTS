@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'contracts.apps.ContractsConfig',
     'history.apps.HistoryConfig',
+    'user',
 ]
 
 MIDDLEWARE = [

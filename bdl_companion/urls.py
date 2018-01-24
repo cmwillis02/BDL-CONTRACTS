@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home, name='home'),
     url(r'^contracts/', include('contracts.urls')),
+    url(r'^user/', include(user_urls, app_name= 'user', namespace= 'dj-auth')),
 ]
