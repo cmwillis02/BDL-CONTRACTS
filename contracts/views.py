@@ -34,7 +34,7 @@ def franchise_contract_detail(request, pk):
     
 def player_contract_detail(request, pk):
 	
-	contract = Contract.objects.filter(player_id = pk).order_by('-id')[0]
+	contract = Contract.objects.filter(id = pk).order_by('-id')[0]
 	
 	return render(request, 'contracts/player_contract_detail.html', {'contract' : contract})
 	

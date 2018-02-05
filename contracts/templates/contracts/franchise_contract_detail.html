@@ -122,7 +122,7 @@
     		{% for player in active_players %}	
     			
     			<tr>
-    				<td> <a href= "{{ player.get_update_url }}"> {{ player.player.name }} </a> </td>
+    				<td> <a href= "{{ player.get_detail_url }}"> {{ player.player.name }} </a> </td>
     				<td> {{player.player.get_position_display}} </td>
     				<td> {{player.years_remaining}} </td>
     			</tr>

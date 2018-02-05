@@ -31,9 +31,10 @@ class Contract(models.Model):
 	
 	def get_detail_url(self):
 		
-		return reverse('player_contract_detail', kwargs= {'pk' : self.pk})
+		print (self.player_id)
+		return reverse('player_contract_detail', kwargs= {'pk' : self.id})
 	
-		
+	
 class Franchise(models.Model):
 	"""
 	Model representing Franchise dimension
