@@ -161,3 +161,16 @@ class export():
 		
 		url= '{}?TYPE={}&L={}&APIKEY=&W={}TRANS_TYPE={}&FRANCHISE=&DAYS={}&COUNT=&JSON=1'.format(self.export_url, self.league_id, week, type, trans_type, days)
 		print (url)
+	
+	def player_dim(self):
+		
+		self.login()
+		type= 'players'
+		
+		url= '{}?TYPE={}&L={}&SINCE=&APIKEY=&FRANCHISE=&JSON=1'.format(self.export_url, type)
+		response= self.session.get(url)
+		json_data= json.loads(response.text)
+		
+		return json_data
+
+		
