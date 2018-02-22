@@ -1,6 +1,6 @@
 #!/usr/bin/python3.6
 
-import psycopg2
+import MySQLdb as sqldb
 import json
 import sys
 import time
@@ -13,21 +13,19 @@ except:
 class contract_process(object):
 
 	def __init__(self, roster_json):
-		self.dsn_database= 'CORE'
-		self.dsn_hostname= 'bdlcompanion.cquxuyvkuxqs.us-east-1.rds.amazonaws.com'
-		self.dsn_port = '5432'
-		self.dsn_uid= 'bdladmin'
-		self.dsn_pwd= 'bdladmin!23'
-		self.roster_json= roster_json
-
+		
 		try:
-			conn_string= "host={} port={} dbname={} user={} password= {}".format(self.dsn_hostname, self.dsn_port, self.dsn_database, self.dsn_uid, self.dsn_pwd)
-			self.conn=psycopg2.connect(conn_string)
+			db=sqldb.connect(
+							host="localhost",
+							user="root",
+							passwd="Bdladmin!23",
+							db="BDLCORE")
+			self.cur= db.cursor()
+			print ('connected')
 			
-			self.cur= self.conn.cursor()
 		except:
-			print ('Unable to Connect')
-			sys.exit(1)
+			print ('Failed to connect')
+
 			
 		# Lists used to close contracts that are not new or recently processed
 		self.cur.execute(
@@ -36,6 +34,7 @@ class contract_process(object):
 		
 		self.starting_contracts = self.cur.fetchall()
 		self.processed_contracts= []
+		self.roster_json= roster_json
 		
 	def main_process(self):
 
@@ -123,7 +122,7 @@ class contract_process(object):
 	def new_contract(self, player_id, franchise_id, years, ir):
 	
 		self.cur.execute(
-						"INSERT INTO contracts_contract (current_ind, roster_status, date_assigned, franchise_id, player_id, years, years_remaining) VALUES (%s, %s, %s, %s, %s, %s, %s)", ('true', ir, datetime.date.today(), franchise_id, player_id, years, years)
+						"INSERT INTO contracts_contract (current_ind, roster_status, date_assigned, franchise_id, player_id, years, years_remaining) VALUES (%s, %s, %s, %s, %s, %s, %s)", (True, ir, datetime.date.today(), franchise_id, player_id, years, years)
 						)
 		self.cur.execute(
 						"SELECT max(id) FROM contracts_contract"

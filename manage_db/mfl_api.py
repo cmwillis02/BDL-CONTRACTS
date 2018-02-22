@@ -8,13 +8,13 @@ except:
 class _import():
 
 	def __init__(self):
+		
 
 		week_data= db_utils.db_util()
-
+		self.year= week_data.get_current_week()[1]
 		self.league_id= 69302
 		self.username= "cmwillis02"
 		self.password= "02guam04"
-		self.year= week_data.get_current_week()[1]
 		self.proto= "https://"
 		self.host= "www61.myfantasyleague.com/"
 		self.import_url= "{}{}/{}/import".format(self.proto, self.host, self.year)
@@ -56,16 +56,17 @@ class export():
 	def __init__(self):
 
 		#DRY these should be read from somewhere
-		week_data= db_utils.db_util()
 
+		week_data= db_utils.db_util()
+		self.year= week_data.get_current_week()[1]
+		self.week= week_data.get_current_week()[2]		
 		self.league_id= 21676
 		self.username= "cmwillis02"
 		self.password= "02guam04"
-		self.year= week_data.get_current_week()[1]
-		self.week= week_data.get_current_week()[2]
 		self.proto= "https://"
 		self.host= "www61.myfantasyleague.com/"
 		self.export_url= "{}{}{}/export".format(self.proto, self.host, self.year)
+		
 
 	def login(self):
 
