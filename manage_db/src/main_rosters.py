@@ -5,28 +5,18 @@ import json
 import sys
 import time
 import datetime
+from util import connect_db as conn
 try:
-	import mfl_api
+	from util import mfl_api
 except:
-	from manage_db import mfl_api
+	from manage_db.util import mfl_api
     
-class contract_process(object):
+class Main_roster(conn.Connect):
 
 	def __init__(self, roster_json):
 		
-		try:
-			db=sqldb.connect(
-							host="localhost",
-							user="root",
-							passwd="Bdladmin!23",
-							db="BDLCORE")
-			self.cur= db.cursor()
-			print ('connected')
-			
-		except:
-			print ('Failed to connect')
+		self.connect()
 
-			
 		# Lists used to close contracts that are not new or recently processed
 		self.cur.execute(
 				'SELECT player_id, franchise_id, id FROM contracts_contract WHERE current_ind = true'

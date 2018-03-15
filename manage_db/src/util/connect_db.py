@@ -11,7 +11,6 @@ class Connect(object):
 						passwd="Bdladmin!23",
 						db="BDLCORE")
 		self.cur= self.db.cursor()
-		print ("Connected to Dev")
 		
 	def commit(self, message=None):
 		

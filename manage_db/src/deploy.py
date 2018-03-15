@@ -1,5 +1,5 @@
 import MySQLdb as sqldb
-import connect_db as conn
+from util import connect_db as conn
 import datetime
 
 # Deployment class:  Inherits DB connection from connect_db.
@@ -29,7 +29,7 @@ class Deploy(conn.Connect):
 						)
 		
 		self.cur.execute(
-						"CREATE TABLE job_dim (job_id INTEGER UNIQUE PRIMARY KEY, job_name VARCHAR(50))"
+						"CREATE TABLE job_dim (job_id INTEGER UNIQUE PRIMARY KEY, job_name VARCHAR(50), active_flg INTEGER)"
 						)
 		
 		self.cur.execute(
@@ -46,10 +46,10 @@ class Deploy(conn.Connect):
 						"INSERT INTO url_reference (year, url, league_id) VALUES (%s, %s, %s)",(year, url, league_id)
 						)
 						
-	def job_populate(self, id, name):
+	def job_populate(self, id, name, active_flg):
 	
 		self.cur.execute(
-						"INSERT INTO job_dim (job_id, job_name) VALUES (%s, %s)", (id, name)
+						"INSERT INTO job_dim (job_id, job_name, active_flg) VALUES (%s, %s, %s)", (id, name, active_flg)
 						)
 						
 	def calendar_populate(self, week, job_id):
@@ -91,10 +91,10 @@ url_data= [
 					]
 
 job_data= [
-					(1, 'player_dim_update'),
-					(2, 'roster_update'),
-					(3, 'fact_update'),
-					(4, 'playoff_update'),
+					(1, 'player_dim_update', 1),
+					(2, 'roster_update', 0),
+					(3, 'fact_update', 1),
+					(4, 'playoff_update', 1),
 					]
 
 job_calendar_data= [
@@ -323,7 +323,7 @@ dep.commit('URL Reference')
 
 	#Jobs
 for job in job_data:
-	dep.job_populate(job[0], job[1])
+	dep.job_populate(job[0], job[1], job[2])
 dep.commit('Job Dimension')
 
 	#Calendar

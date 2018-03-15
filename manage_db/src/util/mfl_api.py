@@ -1,9 +1,6 @@
 import requests
 import json
-try:
-    from manage_db import db_utils
-except:
-    import db_utils
+from util import db_utils
 
 class _import():
 
@@ -55,16 +52,14 @@ class export():
 
 	def __init__(self):
 
-		#DRY these should be read from somewhere
-
-		week_data= db_utils.db_util()
-		self.year= week_data.get_current_week()[1]
-		self.week= week_data.get_current_week()[2]		
-		self.league_id= 21676
+		util_data= db_utils.db_util()
+		self.year= util_data.get_current_week()[1]
+		self.week= util_data.get_current_week()[2]		
+		self.league_id= util_data.get_mfl_connection(self.year)[0]
 		self.username= "cmwillis02"
 		self.password= "02guam04"
 		self.proto= "https://"
-		self.host= "www61.myfantasyleague.com/"
+		self.host= "www{}.myfantasyleague.com/".format(util_data.get_mfl_connection(self.year)[1])
 		self.export_url= "{}{}{}/export".format(self.proto, self.host, self.year)
 		
 
@@ -74,6 +69,7 @@ class export():
 
 		login_url= 'https://api.myfantasyleague.com/{}/login?USERNAME={}&PASSWORD={}&XML=1'.format(self.year, self.username, self.password)
 		self.session.get(login_url)
+		
 
 	def player_status(self, player_id):
 
@@ -146,28 +142,56 @@ class export():
 		url='{}?TYPE={}&L={}&APIKEY=&FRANCHISE=&JSON=1'.format(self.export_url, type, self.league_id)
 		response= self.session.get(url)
 		json_data= json.loads(response.text)
+		print (url)
 		
         
 		return json_data
 		
 	def transactions(self):
 	
-		self.login()
-		
-		type= 'transactions'
-		days= 365
-		trans_type= 'WAIVER'
-		week= 10
-		
-		url= '{}?TYPE={}&L={}&APIKEY=&W={}TRANS_TYPE={}&FRANCHISE=&DAYS={}&COUNT=&JSON=1'.format(self.export_url, self.league_id, week, type, trans_type, days)
-		print (url)
+		pass
+	
+# 		self.login()
+# 		
+# 		type= 'transactions'
+# 		days= 365
+# 		trans_type= 'WAIVER'
+# 		week= 10
+# 		
+# 		url= '{}?TYPE={}&L={}&APIKEY=&W={}TRANS_TYPE={}&FRANCHISE=&DAYS={}&COUNT=&JSON=1'.format(self.export_url, self.league_id, week, type, trans_type, days)
 	
 	def player_dim(self):
 		
 		self.login()
 		type= 'players'
 		
-		url= '{}?TYPE={}&L={}&SINCE=&APIKEY=&FRANCHISE=&JSON=1'.format(self.export_url, type)
+		url= '{}?TYPE={}&L={}&SINCE=&APIKEY=&FRANCHISE=&JSON=1'.format(self.export_url, type, self.league_id)
+		print (url)
+		response= self.session.get(url)
+		json_data= json.loads(response.text)
+		
+		return json_data
+		
+	def player_scores(self):
+		
+		self.login()
+		type= 'playerScores'
+		
+		url= '{}?TYPE={}&L={}&W={}&YEAR=&PLAYERS=&POSITION=&STATUS=&RULES=&COUNT=&JSON=1'.format(self.export_url, type, self.league_id, self.week)
+		print (url)
+		
+		response= self.session.get(url)
+		json_data= json.loads(response.text)
+		
+		return json_data
+		
+	def weekly_results(self):
+	
+		self.login()
+		type= 'weeklyResults'
+		
+		url= '{}?TYPE={}&L={}&W={}&YEAR=&PLAYERS=&POSITION=&STATUS=&RULES=&COUNT=&JSON=1'.format(self.export_url, type, self.league_id, self.week)
+		
 		response= self.session.get(url)
 		json_data= json.loads(response.text)
 		
