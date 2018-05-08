@@ -20,6 +20,3 @@ class Fact(models.Model):
 	def __str___(self):
 	
 		return "{} - {} RFA".format(self.player.name, self.franchise.team_name)
-	
-		
-	

@@ -4,8 +4,8 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import View, RedirectView
 from .forms import ContractForm
 from django.urls import reverse
-from manage_db import mfl_api
-from manage_db import manage_rosters
+from manage_db.src.util import mfl_api
+from manage_db.src import main_rosters
 
 	
 def franchise_list(request):

@@ -3,7 +3,7 @@ from .models import Contract
 from django.db.models import Sum
 from django.core.exceptions import ValidationError
 from django.core.exceptions import NON_FIELD_ERRORS
-from manage_db import mfl_api
+from manage_db.src.util import mfl_api
 
 class ContractForm(forms.ModelForm):
 
