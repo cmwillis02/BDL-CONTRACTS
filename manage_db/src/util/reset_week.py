@@ -1,60 +1,51 @@
-import psycopg2
 import sys
+import connect_db as conn
 
-dsn_database= 'CORE'
-dsn_hostname= 'bdlcompanion.cquxuyvkuxqs.us-east-1.rds.amazonaws.com'
-dsn_port = '5432'
-dsn_uid= 'bdladmin'
-dsn_pwd= 'bdladmin!23'
-
-
-try:
-	conn_string= "host=" + dsn_hostname + " port=" + dsn_port+" dbname=" + dsn_database + " user=" + dsn_uid + " password=" + dsn_pwd
-	conn= psycopg2.connect(conn_string)
-	cur= conn.cursor()
-	print ('Connected')
-except:
-	print ('Unable to connect')
-	sys.exit(1)
-
-
-
-week_id= int(input("Enter week to reset: ", ))
-
-if week_id == 99:
-
-	run_yn= input("RESET ALL WEEKS? (y/n): ", )
-
-	if run_yn == 'y':
-		cur.execute(
-					"UPDATE contracts_week SET run_status = 0"
-					)
-
-		cur.execute(
-					"DELETE FROM contracts_player_fact"
-					)
-
-		cur.execute(
-					"DELETE FROM contracts_franchise_fact"
-					)
-
-		conn.commit()
-
-		print ('ALL WEEKS RESET')
-	else:
-		sys.exit(1)
-else:
-	cur.execute(
+class manage_weeks(conn.Connect):
+	
+	def __init__(self):
+		
+		self.connect()
+	
+	def check_week(self, week):
+		
+		try:
+			self.cur.execute(
+							"SELECT run_status FROM contracts_week WHERE week_id = %s", (week, )
+							)
+			if self.cur.fetchall()[0][0] == 1:
+				return week
+			else:
+				print ("{} has not been run".format(week))
+				sys.exit(0)
+				
+		except:
+			print ('No weeks reset')
+			sys.exit(0)
+	
+	def reset_week(self, week_id):
+	
+		self.cur.execute(
 				"UPDATE contracts_week SET run_status = 0 WHERE week_id = %s", (week_id, )
 				)
 
-	cur.execute(
-				"DELETE FROM contracts_player_fact WHERE week_id = %s", (week_id, )
-				)
+		self.cur.execute(
+					"DELETE FROM history_player_fact WHERE week_id = %s", (week_id, )
+					)
 
-	cur.execute(
-				"DELETE FROM contracts_franchise_fact WHERE week_id = %s", (week_id, )
-				)
+		self.cur.execute(
+					"DELETE FROM history_franchise_fact WHERE week_id = %s", (week_id, )
+					)
+		
+		print ('{} has been reset run_status= 0'.format(week_id))
+		self.commit()
+		
+if __name__ == "__main__":
+	week= input('Reset Week:')
+	
+	obj= manage_weeks()
+	obj.reset_week(obj.check_week(int(week)))
+	
 
-	conn.commit()
-
+		
+	

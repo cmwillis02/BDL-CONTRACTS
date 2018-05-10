@@ -2,7 +2,7 @@
 
 import MySQLdb as sqldb
 import sys
-from util import connect_db as conn
+from . import connect_db as conn
 
 class db_util(conn.Connect):
 			
@@ -39,4 +39,5 @@ class db_util(conn.Connect):
 						"UPDATE contracts_week SET run_status = 1 WHERE week_id= %s",(week,)
 						)
 		self.commit("CLOSE WEEK {}".format(week))
+		
 		
