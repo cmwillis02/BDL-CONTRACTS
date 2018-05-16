@@ -82,12 +82,11 @@ WSGI_APPLICATION = 'bdl_companion.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'CORE',
-        'USER': 'bdladmin',
-        'PASSWORD': 'bdladmin!23',
-        'HOST': 'bdlcompanion.cquxuyvkuxqs.us-east-1.rds.amazonaws.com',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'cmwillis02$default',
+        'USER': 'cmwillis02',
+        'PASSWORD': 'Bdladmin!23',
+        'HOST': 'cmwillis02.mysql.pythonanywhere-services.com',
     }
 }
 
@@ -95,7 +94,7 @@ from .log_filters import ManagementFilter
 
 verbose= (	"[%(asctime)s] %(levelname)s "
 		  	"[%name)s:%(lineno)s] %(messages)s")
-		  	
+
 LOGGING = {
 			'version' : 1,
 			'disable_existing_loggers' : False,
