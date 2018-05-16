@@ -37,7 +37,19 @@ class Main_player_dim(conn.Connect):
 				self.cur.execute(
 								"INSERT INTO contracts_player (player_id, position, name) VALUES (%s, %s, %s)",(player_id, position_code, name)
 								)
+				self.commit("player_dim")
+
 			except:
 				self.db.rollback()
+
 				
 		self.commit("player_dim")
+		
+if __name__ == "__main__":
+	
+	from util import mfl_api as mfl
+	
+	api= mfl.export()
+		
+	main_player_dim= Main_player_dim(api.player_dim())
+	main_player_dim.load_players()

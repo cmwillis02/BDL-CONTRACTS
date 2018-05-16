@@ -1,6 +1,10 @@
 import requests
 import json
-from util import db_utils
+
+try:
+	from manage_db.src.util import db_utils
+except:
+	from . import db_utils
 
 class _import():
 

@@ -5,12 +5,17 @@ import json
 import sys
 import time
 import datetime
-from util import connect_db as conn
+try:
+	from util import connect_db as conn
+except:
+	from manage_db.src.util import connect_db as conn
+
 try:
 	from util import mfl_api
 except:
-	from manage_db.util import mfl_api
-    
+	from manage_db.src.util import mfl_api
+
+
 class Main_roster(conn.Connect):
 
 	def __init__(self, roster_json):
@@ -23,6 +28,8 @@ class Main_roster(conn.Connect):
 				)
 		
 		self.starting_contracts = self.cur.fetchall()
+		
+		#Create empty list to store processed contracts
 		self.processed_contracts= []
 		self.roster_json= roster_json
 		
@@ -43,7 +50,7 @@ class Main_roster(conn.Connect):
 				status= self.set_status(player_id, franchise_id)
 
 				if status[0]== 'new':
-					self.new_contract(player_id, franchise_id, 0, ir)
+					self.new_contract(player_id, franchise_id, years, ir)
 				elif status[0]== 'current':
 					self.set_ir(ir, status[1])
 					self.processed_contracts.append(status[1])
@@ -53,7 +60,7 @@ class Main_roster(conn.Connect):
 					
 		self.close_remaining()
 		self.auto_assign()	
-		self.conn.commit()
+		self.db.commit()
 		
 	def close_remaining(self):
 
@@ -67,7 +74,7 @@ class Main_roster(conn.Connect):
 	def auto_assign(self):
 		
 		self.cur.execute(
-				"SELECT id, player_id FROM contracts_contract WHERE current_ind = 'true' AND years = 0"
+				"SELECT id, player_id FROM contracts_contract WHERE current_ind = 1 AND years = 0"
 				)
 		results= self.cur.fetchall()
 		
@@ -88,13 +95,13 @@ class Main_roster(conn.Connect):
 	def set_status(self, player_id, franchise_id):
 	
 		self.cur.execute(
-						"SELECT id FROM contracts_contract WHERE player_id= %s AND franchise_id= %s AND current_ind= 'Y'",(player_id, franchise_id)
+						"SELECT id FROM contracts_contract WHERE player_id= %s AND franchise_id= %s AND current_ind= 1",(player_id, franchise_id)
 						)
 		result= self.cur.fetchone()
 						
 		if result is None:
 			self.cur.execute(
-							"SELECT id FROM contracts_contract WHERE player_id= %s AND current_ind= 'Y'", (player_id,)
+							"SELECT id FROM contracts_contract WHERE player_id= %s AND current_ind= 1", (player_id,)
 							)
 			result= self.cur.fetchone()
 			if result is None:
@@ -106,7 +113,7 @@ class Main_roster(conn.Connect):
 		else:
 			status= 'current'
 			id= result[0]
-
+		
 		return (status, id)
 		
 	def new_contract(self, player_id, franchise_id, years, ir):
@@ -119,6 +126,8 @@ class Main_roster(conn.Connect):
 						)
 		id= self.cur.fetchone()[0]
 		self.processed_contracts.append(id)
+		
+		print ("New Contract {} - {} - {} - {}".format(player_id, franchise_id, years, ir))
 						
 	def set_ir(self, ir, id):
 		
@@ -130,5 +139,9 @@ class Main_roster(conn.Connect):
 		
 		today= datetime.date.today()
 		self.cur.execute(
-						"UPDATE contracts_contract SET current_ind = 'false', date_terminated= %s, years_remaining= %s, roster_status= %s WHERE id= %s",(today, None, None, contract_id)
+						"UPDATE contracts_contract SET current_ind = 0, date_terminated= %s, years_remaining= %s, roster_status= %s WHERE id= %s",(today, None, None, contract_id)
 						)
+						
+if __name__ == "__Main__":
+	obj= Main_roster()
+	obj.main_process()

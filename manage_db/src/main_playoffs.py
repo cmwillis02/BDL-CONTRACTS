@@ -58,15 +58,12 @@ class main_playoffs(conn.Connect):
 	def update(self):
 
 		for row in self.playoff_list:
-			
-			try:
-				cur.execute(
-							"UPDATE contracts_franchise_fact SET matchup_type = %s WHERE week_id = %s AND franchise_id = %s", ('p', row[0], row[1])
-							)
+			self.cur.execute(
+						"UPDATE history_franchise_fact SET matchup_type = %s WHERE week_id = %s AND franchise_id = %s", ('p', row[0], row[1])
+						)
 
-				cur.execute(
-							"UPDATE contracts_franchise_fact SET matchup_type = %s WHERE week_id = %s and franchise_id = %s", ('p', row[0], row[2])
-							)
-			except:
-				continue
+			self.cur.execute(
+						"UPDATE history_franchise_fact SET matchup_type = %s WHERE week_id = %s and franchise_id = %s", ('p', row[0], row[2])
+						)
+				
 		self.commit()

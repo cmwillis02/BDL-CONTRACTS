@@ -1,6 +1,7 @@
 #!/usr/bin/python3.6
 
 from util import connect_db as conn
+import MySQLdb as mysql
 
 class Fact(conn.Connect):
 
@@ -36,11 +37,14 @@ class Fact(conn.Connect):
 			 	
 				else:
 					continue
-# 			print (player_id, franchise_id, self.week_id, score, status)
+			try:
+				self.cur.execute(
+									"INSERT INTO history_player_fact (player_id, franchise_id, week_id, score, roster_status) VALUES (%s, %s, %s, %s, %s)",(player_id, franchise_id, self.week_id, score, status)
+									)
+			except (mysql.Error, mysql.Warning) as err:
+  				print("player_id= {}, franchise_id= {}, week_id= {} score= {} :: {}".format(player_id, franchise_id, self.week_id, score, err))
 			
-			self.cur.execute(
-								"INSERT INTO history_player_fact (player_id, franchise_id, week_id, score, roster_status) VALUES (%s, %s, %s, %s, %s)",(player_id, franchise_id, self.week_id, score, status)
-								)
+			
 		self.commit()
 			 		
 	def weekly_results(self):
