@@ -8,6 +8,7 @@ except:
 	from manage_db import mfl_api
 
 api= mfl_api.export()
+print ('complete export')
 
 process= manage_rosters.contract_process(api.rosters())
 process.main_process()

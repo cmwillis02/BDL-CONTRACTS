@@ -223,4 +223,3 @@ cur.execute(
 				'INSERT INTO job_log (job_name, run_date) VALUES (%s, %s)',('update_player_fact', int(time.time()))
 				)
 conn.commit()
-

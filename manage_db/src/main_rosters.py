@@ -1,41 +1,37 @@
 #!/usr/bin/python3.6
 
-import psycopg2
+import MySQLdb as sqldb
 import json
 import sys
 import time
 import datetime
 try:
-	import mfl_api
+	from util import connect_db as conn
 except:
-	from manage_db import mfl_api
-    
-class contract_process(object):
+	from manage_db.src.util import connect_db as conn
+
+try:
+	from util import mfl_api
+except:
+	from manage_db.src.util import mfl_api
+
+
+class Main_roster(conn.Connect):
 
 	def __init__(self, roster_json):
-		self.dsn_database= 'CORE'
-		self.dsn_hostname= 'bdlcompanion.cquxuyvkuxqs.us-east-1.rds.amazonaws.com'
-		self.dsn_port = '5432'
-		self.dsn_uid= 'bdladmin'
-		self.dsn_pwd= 'bdladmin!23'
-		self.roster_json= roster_json
+		
+		self.connect()
 
-		try:
-			conn_string= "host={} port={} dbname={} user={} password= {}".format(self.dsn_hostname, self.dsn_port, self.dsn_database, self.dsn_uid, self.dsn_pwd)
-			self.conn=psycopg2.connect(conn_string)
-			
-			self.cur= self.conn.cursor()
-		except:
-			print ('Unable to Connect')
-			sys.exit(1)
-			
 		# Lists used to close contracts that are not new or recently processed
 		self.cur.execute(
 				'SELECT player_id, franchise_id, id FROM contracts_contract WHERE current_ind = true'
 				)
 		
 		self.starting_contracts = self.cur.fetchall()
+		
+		#Create empty list to store processed contracts
 		self.processed_contracts= []
+		self.roster_json= roster_json
 		
 	def main_process(self):
 
@@ -54,7 +50,7 @@ class contract_process(object):
 				status= self.set_status(player_id, franchise_id)
 
 				if status[0]== 'new':
-					self.new_contract(player_id, franchise_id, 0, ir)
+					self.new_contract(player_id, franchise_id, years, ir)
 				elif status[0]== 'current':
 					self.set_ir(ir, status[1])
 					self.processed_contracts.append(status[1])
@@ -64,7 +60,7 @@ class contract_process(object):
 					
 		self.close_remaining()
 		self.auto_assign()	
-		self.conn.commit()
+		self.db.commit()
 		
 	def close_remaining(self):
 
@@ -78,7 +74,7 @@ class contract_process(object):
 	def auto_assign(self):
 		
 		self.cur.execute(
-				"SELECT id, player_id FROM contracts_contract WHERE current_ind = 'true' AND years = 0"
+				"SELECT id, player_id FROM contracts_contract WHERE current_ind = 1 AND years = 0"
 				)
 		results= self.cur.fetchall()
 		
@@ -99,13 +95,13 @@ class contract_process(object):
 	def set_status(self, player_id, franchise_id):
 	
 		self.cur.execute(
-						"SELECT id FROM contracts_contract WHERE player_id= %s AND franchise_id= %s AND current_ind= 'Y'",(player_id, franchise_id)
+						"SELECT id FROM contracts_contract WHERE player_id= %s AND franchise_id= %s AND current_ind= 1",(player_id, franchise_id)
 						)
 		result= self.cur.fetchone()
 						
 		if result is None:
 			self.cur.execute(
-							"SELECT id FROM contracts_contract WHERE player_id= %s AND current_ind= 'Y'", (player_id,)
+							"SELECT id FROM contracts_contract WHERE player_id= %s AND current_ind= 1", (player_id,)
 							)
 			result= self.cur.fetchone()
 			if result is None:
@@ -117,19 +113,21 @@ class contract_process(object):
 		else:
 			status= 'current'
 			id= result[0]
-
+		
 		return (status, id)
 		
 	def new_contract(self, player_id, franchise_id, years, ir):
 	
 		self.cur.execute(
-						"INSERT INTO contracts_contract (current_ind, roster_status, date_assigned, franchise_id, player_id, years, years_remaining) VALUES (%s, %s, %s, %s, %s, %s, %s)", ('true', ir, datetime.date.today(), franchise_id, player_id, years, years)
+						"INSERT INTO contracts_contract (current_ind, roster_status, date_assigned, franchise_id, player_id, years, years_remaining) VALUES (%s, %s, %s, %s, %s, %s, %s)", (True, ir, datetime.date.today(), franchise_id, player_id, years, years)
 						)
 		self.cur.execute(
 						"SELECT max(id) FROM contracts_contract"
 						)
 		id= self.cur.fetchone()[0]
 		self.processed_contracts.append(id)
+		
+		print ("New Contract {} - {} - {} - {}".format(player_id, franchise_id, years, ir))
 						
 	def set_ir(self, ir, id):
 		
@@ -141,5 +139,9 @@ class contract_process(object):
 		
 		today= datetime.date.today()
 		self.cur.execute(
-						"UPDATE contracts_contract SET current_ind = 'false', date_terminated= %s, years_remaining= %s, roster_status= %s WHERE id= %s",(today, None, None, contract_id)
+						"UPDATE contracts_contract SET current_ind = 0, date_terminated= %s, years_remaining= %s, roster_status= %s WHERE id= %s",(today, None, None, contract_id)
 						)
+						
+if __name__ == "__Main__":
+	obj= Main_roster()
+	obj.main_process()
