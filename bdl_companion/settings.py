@@ -27,7 +27,7 @@ SECRET_KEY = 'gty=b$_#cl#-*=@k86dd#ykm$-7bvclh@1#8%19*!lk*=9n5oc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ 'cmwillis02.pythonanywhere.com'
+ALLOWED_HOSTS = [ #'cmwillis02.pythonanywhere.com'
 					]
 
 
@@ -82,12 +82,11 @@ WSGI_APPLICATION = 'bdl_companion.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'CORE',
-        'USER': 'bdladmin',
-        'PASSWORD': 'bdladmin!23',
-        'HOST': 'bdlcompanion.cquxuyvkuxqs.us-east-1.rds.amazonaws.com',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'BDLCORE',
+        'USER': 'root',
+        'PASSWORD': 'Bdladmin!23',
+        'HOST': 'localhost',
     }
 }
 
