@@ -1,7 +1,12 @@
 #!/usr/bin/python3.6
 
-from util import connect_db as conn
+
 import MySQLdb as mysql
+
+from util import connect_db as conn
+from util import mfl_api as mfl
+from util import db_utils as util
+
 
 class Fact(conn.Connect):
 
@@ -13,6 +18,7 @@ class Fact(conn.Connect):
 		self.results_list= []
 		self.matchup_list= []
 		self.week_id= week_id
+		
 		
 	def main_process(self):
 	
@@ -53,6 +59,7 @@ class Fact(conn.Connect):
 		for matchup_id in range(0,5):
 			try:
 				for item in self.weekly_results_json()["weeklyResults"]["matchup"][matchup_id]["franchise"]:
+					print (item)
 					franchise_id= item["id"]
 		
 					try:
@@ -75,9 +82,12 @@ class Fact(conn.Connect):
 							score= 0
 						else:
 							score= player["score"]
-					
+							
+						print (player_id, status, score, franchise_id)
+							
 						self.results_list.append((player_id, status, score, franchise_id))
-						
+					
+					print (matchup_id, franchise_id, result, total_score)	
 					self.matchup_list.append((matchup_id, franchise_id, result, total_score))
 			except:
 				break
@@ -85,6 +95,8 @@ class Fact(conn.Connect):
 			
 				
 	def set_matchups(self):
+		print (self.matchup_list)
+		
 		for team in self.matchup_list:
 			m_id= team[0]
 			franchise_id= team[1]
@@ -102,5 +114,13 @@ class Fact(conn.Connect):
 			self.cur.execute(
 								"INSERT INTO history_franchise_fact (week_id, franchise_id, total_score, result, opponent_id, opponent_score, matchup_type) VALUES (%s, %s, %s, %s, %s, %s, %s)",(self.week_id, franchise_id, total_score, result, opponent_id, opponent_score, matchup_type) 
 							)
+			self.commit()
+							
+if __name__ == "__main__":
+	api= mfl.export()
+		
+	#Create Fact class
+	process= Fact(api.player_scores(), api.weekly_results, util.get_current_week()[0])
+	process.main_process()
 	
 		
