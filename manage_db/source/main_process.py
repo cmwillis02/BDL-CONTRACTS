@@ -28,7 +28,7 @@ def run_job(job_id):
 
         #Load Player List
         logger.info("BEGIN LOAD:  PLAYER_DIM")
-        db.load_player_dim(player_load_list)
+        DB.load_player_dim(player_load_list)
         logger.info("END LOAD:  PLAYER_DIM")
 
     if job_id == 2:
@@ -47,23 +47,22 @@ def run_job(job_id):
 
         #Create fact process Object
         logger.info("BEGIN TRANSFORM:  FACT")
-        bdl_fact= BDL_fact.BDL_Fact(player_scores_json, weekly_results_json, db.week_id)
+        bdl_fact= BDL_fact.BDL_Fact(player_scores_json, weekly_results_json, DB.week_id)
         bdl_fact.main_process()
 
         logger.info("END TRANSFORM:  FACT")
 
         logger.info("BEGIN LOAD: FRANCHISE FACT")
-        db.load_franchise_fact(bdl_fact.matchups_to_load)
+        DB.load_franchise_fact(bdl_fact.matchups_to_load)
         logger.info("END LOAD: FRANCHISE FACT")
 
         logger.info("BEGIN LOAD:  PLAYER FACT")
-        db.load_player_fact(bdl_fact.players_to_load)
+        DB.load_player_fact(bdl_fact.players_to_load)
         logger.info("END LOAD:  PLAYER FACT")
 
 
     if job_id == 4:
-        db= Manage_db()
-        db.set_playoffs()
+        DB.set_playoffs()
     logger.info("END JOB:  {}".format(job_id))
 
 
@@ -85,28 +84,28 @@ if __name__ == "__main__":
 
     logger.info("SETUP DB CONNECTION")
     ##Create Database Management Object
-    db= manage_db.Manage_db()
+    DB= manage_db.Manage_db()
 
-    logger.info("Week_id= {}".format(db.week_id))
-    logger.info("MFL Server + League_ID:  {}".format(db.get_mfl_connection()))
+    logger.info("Week_id= {}".format(DB.week_id))
+    logger.info("MFL Server + League_ID:  {}".format(DB.get_mfl_connection()))
     logger.info("DB CONNECTED")
 
     logger.info("SETUP MFL CONNECTION")
 
     ##Create MFL Connection Object
-    mfl= mfl_api.Export(db.year, db.week, db.get_mfl_connection())
+    mfl= mfl_api.Export(DB.year, DB.week, DB.get_mfl_connection())
     mfl.login()
 
     logger.info("MFL CONNECTED")
 
     logger.info("BEGIN:  RUN JOBS")
-    for i in db.get_job_list():
+    for i in DB.get_job_list():
         run_job(i[0])
     logger.info("END:  RUN JOBS")
 
-    db.close_week()
+    DB.close_week()
 
-    rename("logs/main_process.log", "logs/main_process_{}.log".format(db.week_id))
+    rename("logs/main_process.log", "logs/main_process_{}.log".format(DB.week_id))
 
     logger.info("----------")
     logger.info("END:  MAIN PROCESS")

@@ -23,7 +23,7 @@ class BDL_Fact():
 
 
     def main_process(self):
-
+    
         self.logger.info("BEGIN:  FACT MAIN PROCESS")
         self.weekly_results()
         self.player_scores()
