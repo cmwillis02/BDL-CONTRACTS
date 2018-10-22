@@ -7,65 +7,65 @@ class Deploy(conn.Connect):
 
 	def __init__(self):
 		self.connect()
-		
+
 	def franchise_populate(self, franchise_id, team_name, owner_email, owner_name):
-		
+
 		self.cur.execute(
 						"INSERT INTO contracts_franchise (franchise_id, team_name, owner_email, owner_name) VALUES(%s, %s, %s, %s)",(franchise_id, team_name, owner_email, owner_name)
 						)
-						
+
 	def create_tables(self):
-		
+
 		self.cur.execute(
 						"DROP TABLE IF EXISTS url_reference"
 						)
-						
+
 		self.cur.execute(
 						"CREATE TABLE url_reference (year INTEGER, url INTEGER, league_id INTEGER)"
 						)
-		
+
 		self.cur.execute(
 						"DROP TABLE IF EXISTS job_dim"
 						)
-		
+
 		self.cur.execute(
 						"CREATE TABLE job_dim (job_id INTEGER UNIQUE PRIMARY KEY, job_name VARCHAR(50), active_flg INTEGER)"
 						)
-		
+
 		self.cur.execute(
 						"DROP TABLE IF EXISTS job_calendar"
 						)
-									
+
 		self.cur.execute(
 						"CREATE TABLE job_calendar (id INTEGER PRIMARY KEY AUTO_INCREMENT, week INTEGER, job_id INTEGER)"
 						)
-						
+
 	def url_populate(self, year, url, league_id):
-	
+
 		self.cur.execute(
 						"INSERT INTO url_reference (year, url, league_id) VALUES (%s, %s, %s)",(year, url, league_id)
 						)
-						
+
 	def job_populate(self, id, name, active_flg):
-	
+
 		self.cur.execute(
 						"INSERT INTO job_dim (job_id, job_name, active_flg) VALUES (%s, %s, %s)", (id, name, active_flg)
 						)
-						
+
 	def calendar_populate(self, week, job_id):
-		
+
 		self.cur.execute(
 						"INSERT INTO job_calendar (week, job_id) VALUES (%s, %s)", (week, job_id)
 						)
 	def week_populate(self,week_id, year, week, start_date, end_date):
-		
+
 		self.cur.execute(
 						"INSERT INTO contracts_week (week_id, year, week, start_date, end_date, run_status) VALUES (%s, %s, %s, %s, %s, %s)", (week_id, year, week, datetime.date(start_date[0], start_date[1], start_date[2]), datetime.date(end_date[0], end_date[1], end_date[2]), 0)
 						)
-						
-		
+
+
 # Initial Data
-franchise_data= [
+FRANCHISE_DATA= [
 					(1, 'The Truth', 'test@gmail.com', 'Mike Palmer'),
 					(2, 'Baby Steps', 'test2@gmail.com', 'Nathan Scheffey'),
 					(3, 'OhHeBack', 'test3@gmail.com', 'Brett Godin'),
@@ -77,8 +77,8 @@ franchise_data= [
 					(9, 'McNutty', 'test9@gmail.com', 'Micah Deloache'),
 					(10, 'Team Cary What', 'test10@gmail.com', 'Eddie Sato')
 					]
-					
-url_data= [
+
+URL_DATA= [
 					(2009, 55, 52094),
 					(2010, 59, 46342),
 					(2011, 54, 18198),
@@ -90,14 +90,14 @@ url_data= [
 					(2017, 61, 21676),
 					]
 
-job_data= [
+JOB_DATA= [
 					(1, 'player_dim_update', 1),
 					(2, 'roster_update', 0),
 					(3, 'fact_update', 1),
 					(4, 'playoff_update', 1),
 					]
 
-job_calendar_data= [
+JOB_CALENDAR_DATA= [
 					(1, 1),
 					(1, 2),
 					(1, 3),
@@ -150,8 +150,8 @@ job_calendar_data= [
 					(16, 3),
 					(16, 4),
 					]
-				
-week_data= [
+
+WEEK_DATA= [
 			(200901,2009,1,(2009,9,8),(2009,9,14)),
 			(200902,2009,2,(2009,9,15),(2009,9,21)),
 			(200903,2009,3,(2009,9,22),(2009,9,28)),
@@ -311,29 +311,27 @@ week_data= [
 # Deployment process
 	# Franchise
 dep= Deploy()
-for franchise in franchise_data:
+for franchise in FRANCHISE_DATA:
 	dep.franchise_populate(franchise[0], franchise[1], franchise[2], franchise[3])
 dep.commit('Franchise')
 
 # 	# URL reference
 dep.create_tables()
-for row in url_data:
+for row in URL_DATA:
 	dep.url_populate(row[0], row[1], row[2])
 dep.commit('URL Reference')
 
 	#Jobs
-for job in job_data:
+for job in JOB_DATA:
 	dep.job_populate(job[0], job[1], job[2])
 dep.commit('Job Dimension')
 
 	#Calendar
-for calendar in job_calendar_data:
+for calendar in JOB_CALENDAR_DATA:
 	dep.calendar_populate(calendar[0], calendar[1])
 dep.commit('Job Calendar')
 
 	#Week
-for week in week_data:
+for week in WEEK_DATA:
 	dep.week_populate(week[0], week[1], week[2], week[3], week[4])
 dep.commit('Weeks')
-
-	

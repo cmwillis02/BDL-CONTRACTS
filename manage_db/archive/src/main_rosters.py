@@ -19,24 +19,24 @@ except:
 class Main_roster(conn.Connect):
 
 	def __init__(self, roster_json):
-		
+
 		self.connect()
 
 		# Lists used to close contracts that are not new or recently processed
 		self.cur.execute(
 				'SELECT player_id, franchise_id, id FROM contracts_contract WHERE current_ind = true'
 				)
-		
+
 		self.starting_contracts = self.cur.fetchall()
-		
+
 		#Create empty list to store processed contracts
 		self.processed_contracts= []
 		self.roster_json= roster_json
-		
+
 	def main_process(self):
 
 		for franchise in range(0,10):
-			
+
 			franchise_id= franchise + 1
 			for item in self.roster_json["rosters"]["franchise"][franchise]["player"]:
 
@@ -46,7 +46,7 @@ class Main_roster(conn.Connect):
 					ir= 'i'
 				else:
 					ir= 'a'
-					
+
 				status= self.set_status(player_id, franchise_id)
 
 				if status[0]== 'new':
@@ -57,11 +57,11 @@ class Main_roster(conn.Connect):
 				elif status[0]== 'edit':
 					self.close_contract(status[1])
 					self.new_contract(player_id, franchise_id, years, ir)
-					
+
 		self.close_remaining()
-		self.auto_assign()	
+		self.auto_assign()
 		self.db.commit()
-		
+
 	def close_remaining(self):
 
 		for contract in self.starting_contracts:
@@ -70,14 +70,14 @@ class Main_roster(conn.Connect):
 			else:
 				print (contract[2])
 				self.close_contract(contract[2])
-				
+
 	def auto_assign(self):
-		
+
 		self.cur.execute(
 				"SELECT id, player_id FROM contracts_contract WHERE current_ind = 1 AND years = 0"
 				)
 		results= self.cur.fetchall()
-		
+
 		for row in results:
 			mfl_obj= mfl_api.export()
 			status= mfl_obj.game_status(row[1])
@@ -88,17 +88,17 @@ class Main_roster(conn.Connect):
 				self.cur.execute(
 							"UPDATE contracts_contract SET years= 1, years_remaining= 1 WHERE id= %s",(row[0],)
 							)
-	
-		
-								
+
+
+
 	# --- INDIVIDUAL CONTRACT METHODS ---#
 	def set_status(self, player_id, franchise_id):
-	
+
 		self.cur.execute(
 						"SELECT id FROM contracts_contract WHERE player_id= %s AND franchise_id= %s AND current_ind= 1",(player_id, franchise_id)
 						)
 		result= self.cur.fetchone()
-						
+
 		if result is None:
 			self.cur.execute(
 							"SELECT id FROM contracts_contract WHERE player_id= %s AND current_ind= 1", (player_id,)
@@ -113,11 +113,11 @@ class Main_roster(conn.Connect):
 		else:
 			status= 'current'
 			id= result[0]
-		
+
 		return (status, id)
-		
+
 	def new_contract(self, player_id, franchise_id, years, ir):
-	
+
 		self.cur.execute(
 						"INSERT INTO contracts_contract (current_ind, roster_status, date_assigned, franchise_id, player_id, years, years_remaining) VALUES (%s, %s, %s, %s, %s, %s, %s)", (True, ir, datetime.date.today(), franchise_id, player_id, years, years)
 						)
@@ -126,22 +126,22 @@ class Main_roster(conn.Connect):
 						)
 		id= self.cur.fetchone()[0]
 		self.processed_contracts.append(id)
-		
+
 		print ("New Contract {} - {} - {} - {}".format(player_id, franchise_id, years, ir))
-						
+
 	def set_ir(self, ir, id):
-		
+
 		self.cur.execute(
 						"UPDATE contracts_contract SET roster_status = %s WHERE id= %s",(ir, id)
 						)
-						
+
 	def close_contract(self, contract_id):
-		
+
 		today= datetime.date.today()
 		self.cur.execute(
 						"UPDATE contracts_contract SET current_ind = 0, date_terminated= %s, years_remaining= %s, roster_status= %s WHERE id= %s",(today, None, None, contract_id)
 						)
-						
-if __name__ == "__Main__":
+
+if __name__ == "__main__":
 	obj= Main_roster()
 	obj.main_process()

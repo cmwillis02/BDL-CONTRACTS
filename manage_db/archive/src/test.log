@@ -1,0 +1,215 @@
+2018-08-14 21:57:33,389 - __main__ - INFO - -------
+2018-08-14 21:57:33,389 - __main__ - INFO - STEP BEGIN: main process
+2018-08-14 21:57:33,389 - __main__ - INFO - -------
+2018-08-14 21:57:33,390 - __main__ - INFO - STEP BEGIN: Job Setup
+2018-08-14 21:57:33,390 - util.connect_db - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 21:57:33,510 - root.db_util.get_current_week - DEBUG - run_week= (200902, 2009, 2)
+2018-08-14 21:57:33,511 - __main__ - INFO - WEEK ID: 200902
+2018-08-14 21:57:33,511 - __main__ - DEBUG - year= 2009
+2018-08-14 21:57:33,511 - __main__ - DEBUG - week= 2
+2018-08-14 21:57:33,528 - root.db_util.get_job_list - DEBUG - Job List= [(1, 'player_dim_update'), (3, 'fact_update')]
+2018-08-14 21:57:33,529 - __main__ - INFO - Job_list:  [(1, 'player_dim_update'), (3, 'fact_update')]
+2018-08-14 21:57:33,529 - __main__ - INFO - STEP END: Job Setup
+2018-08-14 21:57:33,529 - __main__ - INFO - STEP BEGIN: Run Jobs
+2018-08-14 21:57:33,529 - __main__ - INFO - STEP BEGIN: 1 - player_dim_update
+2018-08-14 21:57:33,529 - util.connect_db - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 21:57:33,537 - root.db_util.get_current_week - DEBUG - run_week= (200902, 2009, 2)
+2018-08-14 21:57:33,537 - util.connect_db - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 21:57:33,542 - root.db_util.get_current_week - DEBUG - run_week= (200902, 2009, 2)
+2018-08-14 21:57:33,542 - util.connect_db - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 21:57:33,546 - root.db_util.get_current_week - DEBUG - run_week= (200902, 2009, 2)
+2018-08-14 21:57:33,548 - root.db_util.get_mfl_connection - DEBUG - Year= 2009  ---  MFL Connection info= (52094, 55)
+2018-08-14 21:57:33,549 - util.connect_db - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 21:57:33,554 - root.db_util.get_current_week - DEBUG - run_week= (200902, 2009, 2)
+2018-08-14 21:57:33,559 - root.db_util.get_mfl_connection - DEBUG - Year= 2009  ---  MFL Connection info= (52094, 55)
+2018-08-14 21:57:33,560 - util.mfl_api - DEBUG - Logging in to MFL
+2018-08-14 21:57:33,560 - util.mfl_api - DEBUG - URL= https://api.myfantasyleague.com/2009/login?USERNAME=cmwillis02&PASSWORD=02guam04&XML=1
+2018-08-14 21:57:33,632 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.myfantasyleague.com
+2018-08-14 21:57:34,894 - urllib3.connectionpool - DEBUG - https://api.myfantasyleague.com:443 "GET /2009/login?USERNAME=cmwillis02&PASSWORD=02guam04&XML=1 HTTP/1.1" 200 115
+2018-08-14 21:57:34,897 - util.mfl_api - DEBUG - EXPORT
+2018-08-14 21:57:34,897 - util.mfl_api - DEBUG - TYPE= players
+2018-08-14 21:57:34,897 - util.mfl_api - DEBUG - URL= https://www55.myfantasyleague.com/2009/export?TYPE=players&L=52094&SINCE=&APIKEY=&FRANCHISE=&JSON=1
+2018-08-14 21:57:34,945 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www55.myfantasyleague.com
+2018-08-14 21:57:35,685 - urllib3.connectionpool - DEBUG - https://www55.myfantasyleague.com:443 "GET /2009/export?TYPE=players&L=52094&SINCE=&APIKEY=&FRANCHISE=&JSON=1 HTTP/1.1" 200 31957
+2018-08-14 21:57:35,737 - util.connect_db - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 21:57:35,881 - __main__ - INFO - STEP END: player_dim_update
+2018-08-14 21:57:35,881 - __main__ - INFO - STEP BEGIN: 3 - fact_update
+2018-08-14 21:57:35,881 - util.connect_db - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 21:57:35,883 - root.db_util.get_current_week - DEBUG - run_week= (200902, 2009, 2)
+2018-08-14 21:57:35,883 - util.connect_db - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 21:57:35,885 - root.db_util.get_current_week - DEBUG - run_week= (200902, 2009, 2)
+2018-08-14 21:57:35,885 - util.connect_db - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 21:57:35,886 - root.db_util.get_current_week - DEBUG - run_week= (200902, 2009, 2)
+2018-08-14 21:57:35,886 - root.db_util.get_mfl_connection - DEBUG - Year= 2009  ---  MFL Connection info= (52094, 55)
+2018-08-14 21:57:35,886 - util.connect_db - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 21:57:35,887 - root.db_util.get_current_week - DEBUG - run_week= (200902, 2009, 2)
+2018-08-14 21:57:35,888 - root.db_util.get_mfl_connection - DEBUG - Year= 2009  ---  MFL Connection info= (52094, 55)
+2018-08-14 21:57:35,888 - util.mfl_api - DEBUG - Logging in to MFL
+2018-08-14 21:57:35,888 - util.mfl_api - DEBUG - URL= https://api.myfantasyleague.com/2009/login?USERNAME=cmwillis02&PASSWORD=02guam04&XML=1
+2018-08-14 21:57:35,890 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.myfantasyleague.com
+2018-08-14 21:57:37,010 - urllib3.connectionpool - DEBUG - https://api.myfantasyleague.com:443 "GET /2009/login?USERNAME=cmwillis02&PASSWORD=02guam04&XML=1 HTTP/1.1" 200 115
+2018-08-14 21:57:37,012 - util.mfl_api - DEBUG - EXPORT
+2018-08-14 21:57:37,012 - util.mfl_api - DEBUG - TYPE= playerScores
+2018-08-14 21:57:37,012 - util.mfl_api - DEBUG - URL= https://www55.myfantasyleague.com/2009/export?TYPE=playerScores&L=52094&W=2&YEAR=&PLAYERS=&POSITION=&STATUS=&RULES=&COUNT=&JSON=1
+2018-08-14 21:57:37,015 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www55.myfantasyleague.com
+2018-08-14 21:57:37,369 - urllib3.connectionpool - DEBUG - https://www55.myfantasyleague.com:443 "GET /2009/export?TYPE=playerScores&L=52094&W=2&YEAR=&PLAYERS=&POSITION=&STATUS=&RULES=&COUNT=&JSON=1 HTTP/1.1" 200 2289
+2018-08-14 21:57:37,371 - util.connect_db - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 21:57:37,375 - root.db_util.get_current_week - DEBUG - run_week= (200902, 2009, 2)
+2018-08-14 21:57:37,376 - util.connect_db - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 21:57:37,381 - util.mfl_api - DEBUG - Logging in to MFL
+2018-08-14 21:57:37,381 - util.mfl_api - DEBUG - URL= https://api.myfantasyleague.com/2009/login?USERNAME=cmwillis02&PASSWORD=02guam04&XML=1
+2018-08-14 21:57:37,383 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.myfantasyleague.com
+2018-08-14 21:57:38,549 - urllib3.connectionpool - DEBUG - https://api.myfantasyleague.com:443 "GET /2009/login?USERNAME=cmwillis02&PASSWORD=02guam04&XML=1 HTTP/1.1" 200 115
+2018-08-14 21:57:38,551 - util.mfl_api - DEBUG - EXPORT
+2018-08-14 21:57:38,551 - util.mfl_api - DEBUG - TYPE= weeklyResults
+2018-08-14 21:57:38,551 - util.mfl_api - DEBUG - URL= https://www55.myfantasyleague.com/2009/export?TYPE=weeklyResults&L=52094&W=2&YEAR=&PLAYERS=&POSITION=&STATUS=&RULES=&COUNT=&JSON=1
+2018-08-14 21:57:38,555 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www55.myfantasyleague.com
+2018-08-14 21:57:38,932 - urllib3.connectionpool - DEBUG - https://www55.myfantasyleague.com:443 "GET /2009/export?TYPE=weeklyResults&L=52094&W=2&YEAR=&PLAYERS=&POSITION=&STATUS=&RULES=&COUNT=&JSON=1 HTTP/1.1" 200 2844
+2018-08-14 21:57:39,043 - __main__ - INFO - STEP END: fact_update
+2018-08-14 21:57:39,047 - __main__ - INFO - STEP END: Run Jobs
+2018-08-14 21:57:39,048 - __main__ - INFO - STEP BEGIN: Close Week
+2018-08-14 21:57:39,048 - util.connect_db - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 21:57:39,050 - root.db_util.get_current_week - DEBUG - run_week= (200902, 2009, 2)
+2018-08-14 21:57:39,055 - root.db_util.close_week - DEBUG - Week= 200902 Run_status = 1
+2018-08-14 21:57:39,057 - __main__ - INFO - STEP END: Close Week
+2018-08-14 21:57:39,057 - __main__ - INFO - -------
+2018-08-14 21:57:39,057 - __main__ - INFO - End: main process
+2018-08-14 21:57:39,057 - __main__ - INFO - -------
+2018-08-14 22:03:44,652 - __main__ - INFO - -------
+2018-08-14 22:03:44,652 - __main__ - INFO - STEP BEGIN: main process
+2018-08-14 22:03:44,652 - __main__ - INFO - -------
+2018-08-14 22:03:44,652 - __main__ - INFO - STEP BEGIN: Job Setup
+2018-08-14 22:03:44,653 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 22:03:44,706 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-14 22:03:44,707 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-14 22:03:44,707 - __main__ - INFO - WEEK ID: 200903
+2018-08-14 22:03:44,707 - __main__ - DEBUG - year= 2009
+2018-08-14 22:03:44,707 - __main__ - DEBUG - week= 3
+2018-08-14 22:03:44,708 - util.db_utils - DEBUG - Job List= [(1, 'player_dim_update'), (3, 'fact_update')]
+2018-08-14 22:03:44,709 - __main__ - INFO - Job_list:  [(1, 'player_dim_update'), (3, 'fact_update')]
+2018-08-14 22:03:44,709 - __main__ - INFO - STEP END: Job Setup
+2018-08-14 22:03:44,709 - __main__ - INFO - STEP BEGIN: Run Jobs
+2018-08-14 22:03:44,709 - __main__ - INFO - STEP BEGIN: 1 - player_dim_update
+2018-08-14 22:03:44,709 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 22:03:44,710 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-14 22:03:44,711 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-14 22:03:44,711 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 22:03:44,713 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-14 22:03:44,714 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-14 22:03:44,714 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 22:03:44,715 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-14 22:03:44,716 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-14 22:03:44,717 - util.db_utils - DEBUG - Year= 2009  ---  MFL Connection info= (52094, 55)
+2018-08-14 22:03:44,717 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 22:03:44,718 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-14 22:03:44,718 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-14 22:03:44,720 - util.db_utils - DEBUG - Year= 2009  ---  MFL Connection info= (52094, 55)
+2018-08-14 22:03:44,720 - util.mfl_api - DEBUG - Logging in to MFL
+2018-08-14 22:03:44,721 - util.mfl_api - DEBUG - URL= https://api.myfantasyleague.com/2009/login?USERNAME=cmwillis02&PASSWORD=02guam04&XML=1
+2018-08-14 22:03:44,731 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.myfantasyleague.com
+2018-08-14 22:03:45,861 - urllib3.connectionpool - DEBUG - https://api.myfantasyleague.com:443 "GET /2009/login?USERNAME=cmwillis02&PASSWORD=02guam04&XML=1 HTTP/1.1" 200 115
+2018-08-14 22:03:45,864 - util.mfl_api - DEBUG - EXPORT
+2018-08-14 22:03:45,864 - util.mfl_api - DEBUG - TYPE= players
+2018-08-14 22:03:45,864 - util.mfl_api - DEBUG - URL= https://www55.myfantasyleague.com/2009/export?TYPE=players&L=52094&SINCE=&APIKEY=&FRANCHISE=&JSON=1
+2018-08-14 22:03:45,867 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www55.myfantasyleague.com
+2018-08-14 22:03:46,574 - urllib3.connectionpool - DEBUG - https://www55.myfantasyleague.com:443 "GET /2009/export?TYPE=players&L=52094&SINCE=&APIKEY=&FRANCHISE=&JSON=1 HTTP/1.1" 200 31957
+2018-08-14 22:04:40,818 - __main__ - INFO - -------
+2018-08-14 22:04:40,818 - __main__ - INFO - STEP BEGIN: main process
+2018-08-14 22:04:40,818 - __main__ - INFO - -------
+2018-08-14 22:04:40,818 - __main__ - INFO - STEP BEGIN: Job Setup
+2018-08-14 22:04:40,818 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 22:04:40,830 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-14 22:04:40,831 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-14 22:04:40,831 - __main__ - INFO - WEEK ID: 200903
+2018-08-14 22:04:40,831 - __main__ - DEBUG - year= 2009
+2018-08-14 22:04:40,831 - __main__ - DEBUG - week= 3
+2018-08-14 22:04:40,831 - util.db_utils - DEBUG - Job List= [(1, 'player_dim_update'), (3, 'fact_update')]
+2018-08-14 22:04:40,831 - __main__ - INFO - Job_list:  [(1, 'player_dim_update'), (3, 'fact_update')]
+2018-08-14 22:04:40,831 - __main__ - INFO - STEP END: Job Setup
+2018-08-14 22:04:40,831 - __main__ - INFO - STEP BEGIN: Run Jobs
+2018-08-14 22:04:40,832 - __main__ - INFO - STEP BEGIN: 1 - player_dim_update
+2018-08-14 22:04:40,832 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 22:04:40,832 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-14 22:04:40,832 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-14 22:04:40,832 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 22:04:40,833 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-14 22:04:40,833 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-14 22:04:40,834 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 22:04:40,834 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-14 22:04:40,834 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-14 22:04:40,835 - util.db_utils - DEBUG - Year= 2009  ---  MFL Connection info= (52094, 55)
+2018-08-14 22:04:40,835 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-14 22:04:40,835 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-14 22:04:40,836 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-14 22:04:40,836 - util.db_utils - DEBUG - Year= 2009  ---  MFL Connection info= (52094, 55)
+2018-08-14 22:04:40,836 - util.mfl_api - DEBUG - Logging in to MFL
+2018-08-14 22:04:40,836 - util.mfl_api - DEBUG - URL= https://api.myfantasyleague.com/2009/login?USERNAME=cmwillis02&PASSWORD=02guam04&XML=1
+2018-08-14 22:04:40,843 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.myfantasyleague.com
+2018-08-14 22:04:41,977 - urllib3.connectionpool - DEBUG - https://api.myfantasyleague.com:443 "GET /2009/login?USERNAME=cmwillis02&PASSWORD=02guam04&XML=1 HTTP/1.1" 200 115
+2018-08-14 22:04:41,980 - util.mfl_api - DEBUG - EXPORT
+2018-08-14 22:04:41,980 - util.mfl_api - DEBUG - TYPE= players
+2018-08-14 22:04:41,980 - util.mfl_api - DEBUG - URL= https://www55.myfantasyleague.com/2009/export?TYPE=players&L=52094&SINCE=&APIKEY=&FRANCHISE=&JSON=1
+2018-08-14 22:04:41,985 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www55.myfantasyleague.com
+2018-08-14 22:04:42,675 - urllib3.connectionpool - DEBUG - https://www55.myfantasyleague.com:443 "GET /2009/export?TYPE=players&L=52094&SINCE=&APIKEY=&FRANCHISE=&JSON=1 HTTP/1.1" 200 31957
+2018-08-20 21:05:33,222 - __main__ - INFO - -------
+2018-08-20 21:05:33,223 - __main__ - INFO - STEP BEGIN: main process
+2018-08-20 21:05:33,223 - __main__ - INFO - -------
+2018-08-20 21:05:33,223 - __main__ - INFO - STEP BEGIN: Job Setup
+2018-08-20 21:05:33,224 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-20 21:05:33,320 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-20 21:05:33,410 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-20 21:05:33,410 - __main__ - INFO - WEEK ID: 200903
+2018-08-20 21:05:33,411 - __main__ - DEBUG - year= 2009
+2018-08-20 21:05:33,411 - __main__ - DEBUG - week= 3
+2018-08-20 21:05:33,430 - util.db_utils - DEBUG - Job List= [(1, 'player_dim_update'), (3, 'fact_update')]
+2018-08-20 21:05:33,431 - __main__ - INFO - Job_list:  [(1, 'player_dim_update'), (3, 'fact_update')]
+2018-08-20 21:05:33,431 - __main__ - INFO - STEP END: Job Setup
+2018-08-20 21:05:33,431 - __main__ - INFO - STEP BEGIN: Run Jobs
+2018-08-20 21:05:33,431 - __main__ - INFO - STEP BEGIN: 1 - player_dim_update
+2018-08-20 21:05:33,431 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-20 21:05:33,434 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-20 21:05:33,435 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-20 21:05:33,435 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-20 21:05:33,439 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-20 21:05:33,440 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-20 21:05:33,440 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-20 21:05:33,442 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-20 21:05:33,443 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-20 21:05:33,444 - util.db_utils - DEBUG - Year= 2009  ---  MFL Connection info= (52094, 55)
+2018-08-20 21:05:33,445 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-20 21:05:33,447 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-20 21:05:33,449 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-20 21:05:33,449 - util.db_utils - DEBUG - Year= 2009  ---  MFL Connection info= (52094, 55)
+2018-08-20 21:05:33,451 - util.mfl_api - DEBUG - Logging in to MFL
+2018-08-20 21:05:33,451 - util.mfl_api - DEBUG - URL= https://api.myfantasyleague.com/2009/login?USERNAME=cmwillis02&PASSWORD=02guam04&XML=1
+2018-08-20 21:05:33,516 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.myfantasyleague.com
+2018-08-20 21:05:35,193 - urllib3.connectionpool - DEBUG - https://api.myfantasyleague.com:443 "GET /2009/login?USERNAME=cmwillis02&PASSWORD=02guam04&XML=1 HTTP/1.1" 200 115
+2018-08-20 21:05:35,195 - util.mfl_api - DEBUG - EXPORT
+2018-08-20 21:05:35,195 - util.mfl_api - DEBUG - TYPE= players
+2018-08-20 21:05:35,195 - util.mfl_api - DEBUG - URL= https://www55.myfantasyleague.com/2009/export?TYPE=players&L=52094&SINCE=&APIKEY=&FRANCHISE=&JSON=1
+2018-08-20 21:05:35,219 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www55.myfantasyleague.com
+2018-08-20 21:05:36,077 - urllib3.connectionpool - DEBUG - https://www55.myfantasyleague.com:443 "GET /2009/export?TYPE=players&L=52094&SINCE=&APIKEY=&FRANCHISE=&JSON=1 HTTP/1.1" 200 31957
+2018-08-20 21:09:14,315 - __main__ - INFO - -------
+2018-08-20 21:09:14,315 - __main__ - INFO - STEP BEGIN: main process
+2018-08-20 21:09:14,316 - __main__ - INFO - -------
+2018-08-20 21:09:14,316 - __main__ - INFO - STEP BEGIN: Job Setup
+2018-08-20 21:09:14,316 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-20 21:09:14,333 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-20 21:09:14,333 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-20 21:09:14,333 - __main__ - INFO - WEEK ID: 200903
+2018-08-20 21:09:14,333 - __main__ - DEBUG - year= 2009
+2018-08-20 21:09:14,333 - __main__ - DEBUG - week= 3
+2018-08-20 21:09:14,334 - util.db_utils - DEBUG - Job List= [(1, 'player_dim_update'), (3, 'fact_update')]
+2018-08-20 21:09:14,334 - __main__ - INFO - Job_list:  [(1, 'player_dim_update'), (3, 'fact_update')]
+2018-08-20 21:09:14,334 - __main__ - INFO - STEP END: Job Setup
+2018-08-20 21:09:14,334 - __main__ - INFO - STEP BEGIN: Run Jobs
+2018-08-20 21:09:14,334 - __main__ - INFO - STEP END: Run Jobs
+2018-08-20 21:09:14,334 - __main__ - INFO - STEP BEGIN: Close Week
+2018-08-20 21:09:14,334 - util.db_utils - INFO - Connecting to localhost DB= BDLCORE
+2018-08-20 21:09:14,335 - util.db_utils - INFO - Connected to BDLCORE
+2018-08-20 21:09:14,335 - util.db_utils - DEBUG - run_week= (200903, 2009, 3)
+2018-08-20 21:09:14,361 - util.db_utils - DEBUG - Week= 200903 Run_status = 1
+2018-08-20 21:09:14,375 - __main__ - INFO - STEP END: Close Week
+2018-08-20 21:09:14,375 - __main__ - INFO - -------
+2018-08-20 21:09:14,375 - __main__ - INFO - End: main process
+2018-08-20 21:09:14,375 - __main__ - INFO - -------

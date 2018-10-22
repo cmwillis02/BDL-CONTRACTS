@@ -1,5 +1,6 @@
-import requests
 import json
+import logging
+import requests
 
 try:
 	from manage_db.src.util import db_utils
@@ -66,21 +67,32 @@ class export():
 		self.host= "www{}.myfantasyleague.com/".format(util_data.get_mfl_connection(self.year)[1])
 		self.export_url= "{}{}{}/export".format(self.proto, self.host, self.year)
 		
+		# Create logging object for MFL Export Api
+		self.logger= logging.getLogger(__name__)
 
 	def login(self):
 
 		self.session= requests.Session()
-
+		
+		self.logger.debug("Logging in to MFL")
 		login_url= 'https://api.myfantasyleague.com/{}/login?USERNAME={}&PASSWORD={}&XML=1'.format(self.year, self.username, self.password)
+		self.logger.debug("URL= {}".format(login_url))
+		
 		self.session.get(login_url)
 		
 
 	def player_status(self, player_id):
-
+		
+		
 		self.login()
 
 		type= "playerStatus"
 		url= '{}?TYPE={}&L={}&P={}&JSON=1'.format(self.export_url, type, self.league_id, player_id)
+		
+		self.logger.debug("EXPORT")
+		self.logger.debug("TYPE= {}".format(type))
+		self.logger.debug("URL= {}".format(url))
+		
 		response= self.session.get(url)
 		json_data= json.loads(response.text)
 
@@ -96,6 +108,11 @@ class export():
 		else:
 			type= "liveScoring"
 			url= '{}?TYPE={}&L={}&W={}&DETAILS=1&JSON=1'.format(self.export_url, type, self.league_id, self.week)
+			
+			self.logger.debug("EXPORT")
+			self.logger.debug("TYPE= {}".format(type))
+			self.logger.debug("URL= {}".format(url))
+			
 			response= self.session.get(url)
 			json_data= json.loads(response.text)
 			
@@ -144,6 +161,11 @@ class export():
 		type= 'rosters'
 		
 		url='{}?TYPE={}&L={}&APIKEY=&FRANCHISE=&JSON=1'.format(self.export_url, type, self.league_id)
+		
+		self.logger.debug("EXPORT")
+		self.logger.debug("TYPE= {}".format(type))
+		self.logger.debug("URL= {}".format(url))
+		
 		response= self.session.get(url)
 		json_data= json.loads(response.text)
 		print (url)
@@ -170,7 +192,11 @@ class export():
 		type= 'players'
 		
 		url= '{}?TYPE={}&L={}&SINCE=&APIKEY=&FRANCHISE=&JSON=1'.format(self.export_url, type, self.league_id)
-		print (url)
+		
+		self.logger.debug("EXPORT")
+		self.logger.debug("TYPE= {}".format(type))
+		self.logger.debug("URL= {}".format(url))
+		
 		response= self.session.get(url)
 		json_data= json.loads(response.text)
 		
@@ -182,7 +208,10 @@ class export():
 		type= 'playerScores'
 		
 		url= '{}?TYPE={}&L={}&W={}&YEAR=&PLAYERS=&POSITION=&STATUS=&RULES=&COUNT=&JSON=1'.format(self.export_url, type, self.league_id, self.week)
-		print (url)
+		
+		self.logger.debug("EXPORT")
+		self.logger.debug("TYPE= {}".format(type))
+		self.logger.debug("URL= {}".format(url))
 		
 		response= self.session.get(url)
 		json_data= json.loads(response.text)
@@ -195,6 +224,10 @@ class export():
 		type= 'weeklyResults'
 		
 		url= '{}?TYPE={}&L={}&W={}&YEAR=&PLAYERS=&POSITION=&STATUS=&RULES=&COUNT=&JSON=1'.format(self.export_url, type, self.league_id, self.week)
+		
+		self.logger.debug("EXPORT")
+		self.logger.debug("TYPE= {}".format(type))
+		self.logger.debug("URL= {}".format(url))
 		
 		response= self.session.get(url)
 		json_data= json.loads(response.text)

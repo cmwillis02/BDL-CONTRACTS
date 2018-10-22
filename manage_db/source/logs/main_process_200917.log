@@ -1,0 +1,29 @@
+2018-10-17 15:25:08,734 - __main__ - INFO - ----------
+2018-10-17 15:25:08,734 - __main__ - INFO - BEGIN:  MAIN PROCESS
+2018-10-17 15:25:08,734 - __main__ - INFO - ----------
+2018-10-17 15:25:08,734 - __main__ - INFO - SETUP DB CONNECTION
+2018-10-17 15:25:08,734 - manage_db - INFO - Connecting to localhost DB= BDLCORE
+2018-10-17 15:25:08,790 - manage_db - INFO - Connected to BDLCORE
+2018-10-17 15:25:08,790 - manage_db - INFO - Collecting current week
+2018-10-17 15:25:08,791 - manage_db - INFO - Week_id= 200917, year= 2009, week= 17
+2018-10-17 15:25:08,791 - __main__ - DEBUG - Week_id= 200917
+2018-10-17 15:25:08,791 - manage_db - INFO - Year= 2009  ---  MFL Connection info= (52094, 55)
+2018-10-17 15:25:08,791 - __main__ - DEBUG - MFL Server + League_ID:  (52094, 55)
+2018-10-17 15:25:08,791 - __main__ - INFO - DB CONNECTED
+2018-10-17 15:25:08,791 - __main__ - INFO - SETUP MFL CONNECTION
+2018-10-17 15:25:08,791 - manage_db - INFO - Year= 2009  ---  MFL Connection info= (52094, 55)
+2018-10-17 15:25:08,792 - mfl_api - INFO - Logging in to MFL
+2018-10-17 15:25:08,792 - mfl_api - DEBUG - URL= https://api.myfantasyleague.com/2009/login?USERNAME=cmwillis02&PASSWORD=02guam04&XML=1
+2018-10-17 15:25:08,802 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.myfantasyleague.com
+2018-10-17 15:25:11,182 - urllib3.connectionpool - DEBUG - https://api.myfantasyleague.com:443 "GET /2009/login?USERNAME=cmwillis02&PASSWORD=02guam04&XML=1 HTTP/1.1" 200 115
+2018-10-17 15:25:11,187 - mfl_api - INFO - Session Login Response
+2018-10-17 15:25:11,187 - mfl_api - INFO - <requests.sessions.Session object at 0x10a42d080>
+2018-10-17 15:25:11,187 - __main__ - INFO - MFL CONNECTED
+2018-10-17 15:25:11,187 - __main__ - INFO - BEGIN:  RUN JOBS
+2018-10-17 15:25:11,188 - manage_db - INFO - Job List= []
+2018-10-17 15:25:11,189 - __main__ - INFO - END:  RUN JOBS
+2018-10-17 15:25:11,189 - manage_db - INFO - CLOSE WEEK 200917
+2018-10-17 15:25:11,189 - manage_db - INFO - Week= 200917 Run_status = 1
+2018-10-17 15:25:11,192 - __main__ - INFO - ----------
+2018-10-17 15:25:11,193 - __main__ - INFO - END:  MAIN PROCESS
+2018-10-17 15:25:11,193 - __main__ - INFO - ----------

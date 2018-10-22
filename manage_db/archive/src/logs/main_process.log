@@ -1,0 +1,26 @@
+2018-07-16 20:25:44,680 - __main__ - INFO - ------- 
+2018-07-16 20:25:44,680 - __main__ - INFO - STEP BEGIN: main process 
+2018-07-16 20:25:44,681 - __main__ - INFO - ------- 
+2018-07-16 20:25:44,681 - __main__ - INFO - STEP BEGIN: Job Setup 
+2018-07-16 20:25:44,722 - __main__ - INFO - WEEK ID: 201514 
+2018-07-16 20:25:44,722 - __main__ - DEBUG - year= 2015 
+2018-07-16 20:25:44,722 - __main__ - DEBUG - week= 14 
+2018-07-16 20:25:44,722 - __main__ - INFO - Job_list:  [(1, 'player_dim_update'), (3, 'fact_update'), (4, 'playoff_update')] 
+2018-07-16 20:25:44,722 - __main__ - INFO - STEP END: Job Setup 
+2018-07-16 20:25:44,722 - __main__ - INFO - STEP BEGIN: Run Jobs 
+2018-07-16 20:25:44,722 - __main__ - INFO - STEP BEGIN: 1 - player_dim_update 
+2018-07-16 20:25:46,738 - __main__ - INFO - STEP END: player_dim_update 
+2018-07-16 20:25:46,739 - __main__ - INFO - STEP BEGIN: 3 - fact_update 
+2018-07-16 20:30:34,850 - __main__ - INFO - ------- 
+2018-07-16 20:30:34,850 - __main__ - INFO - STEP BEGIN: main process 
+2018-07-16 20:30:34,850 - __main__ - INFO - ------- 
+2018-07-16 20:30:34,850 - __main__ - INFO - STEP BEGIN: Job Setup 
+2018-07-16 20:30:34,872 - __main__ - INFO - WEEK ID: 201514 
+2018-07-16 20:30:34,872 - __main__ - DEBUG - year= 2015 
+2018-07-16 20:30:34,872 - __main__ - DEBUG - week= 14 
+2018-07-16 20:30:34,872 - __main__ - INFO - Job_list:  [(1, 'player_dim_update'), (3, 'fact_update'), (4, 'playoff_update')] 
+2018-07-16 20:30:34,872 - __main__ - INFO - STEP END: Job Setup 
+2018-07-16 20:30:34,873 - __main__ - INFO - STEP BEGIN: Run Jobs 
+2018-07-16 20:30:34,873 - __main__ - INFO - STEP BEGIN: 1 - player_dim_update 
+2018-07-16 20:30:36,850 - __main__ - INFO - STEP END: player_dim_update 
+2018-07-16 20:30:36,850 - __main__ - INFO - STEP BEGIN: 3 - fact_update 
