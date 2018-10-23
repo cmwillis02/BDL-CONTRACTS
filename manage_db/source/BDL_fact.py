@@ -23,7 +23,7 @@ class BDL_Fact():
 
 
     def main_process(self):
-    
+
         self.logger.info("BEGIN:  FACT MAIN PROCESS")
         self.weekly_results()
         self.player_scores()
@@ -59,6 +59,7 @@ class BDL_Fact():
 		#Some weeks require fewer than 5 matchup ids, work up from 0 and except: once finished
 
         matchups= 0
+        run_bye_weeks= 0
         for matchup_id in range(0,5):
             self.logger.info("matchup_id = {}".format(matchup_id))
             try:
@@ -66,6 +67,7 @@ class BDL_Fact():
                 matchups= matchup_id
             except:
                 self.logger.warning("MATCHUP ID NOT FOUND")
+                run_bye_weeks= 1
                 break
 
         for matchup_id in range(0,matchups+1):
@@ -111,41 +113,43 @@ class BDL_Fact():
                 self.teams_to_load.append((matchup_id, franchise_id, result, total_score))
 
         ## Load bye week franchises
-        for item in self.weekly_results_json["weeklyResults"]["franchise"]:
-            franchise_id= item["id"]
-            matchup_id = None
+        if run_bye_weeks == 1:
 
-            self.logger.info("MATCHUP:  {}  --  FRANCHISE:  {}".format(matchup_id, franchise_id))
+            for item in self.weekly_results_json["weeklyResults"]["franchise"]:
+                franchise_id= item["id"]
+                matchup_id = None
 
-            total_score= 0
-            players= item["player"]
-            result = 'b'
+                self.logger.info("MATCHUP:  {}  --  FRANCHISE:  {}".format(matchup_id, franchise_id))
 
-            for player in players:
+                total_score= 0
+                players= item["player"]
+                result = 'b'
 
-                self.logger.debug("JSON RAW PLAYERS - {}".format(json.dumps(player, sort_keys= True, indent= 4)))
-                player_id= player["id"]
+                for player in players:
 
-                try:
-                    score= player["score"]
-                    if player["score"] == '':
-                        score= 0
-                    else:
+                    self.logger.debug("JSON RAW PLAYERS - {}".format(json.dumps(player, sort_keys= True, indent= 4)))
+                    player_id= player["id"]
+
+                    try:
                         score= player["score"]
-                except:
-                    score= 0
+                        if player["score"] == '':
+                            score= 0
+                        else:
+                            score= player["score"]
+                    except:
+                        score= 0
 
-                if player["status"] == 'starter':
-                    status= 's'
-                    total_score= float(total_score) + float(score)
-                else:
-                    status= 'b'
+                    if player["status"] == 'starter':
+                        status= 's'
+                        total_score= float(total_score) + float(score)
+                    else:
+                        status= 'b'
 
-                self.logger.info("APPEND PLAYER:  {} - {} - {} - {}".format(player_id, status, score, franchise_id))
-                self.players_to_load.append((player_id, status, score, franchise_id))
+                    self.logger.info("APPEND PLAYER:  {} - {} - {} - {}".format(player_id, status, score, franchise_id))
+                    self.players_to_load.append((player_id, status, score, franchise_id))
 
-            self.logger.info("APPEND FRANCHISE:  {} - {} - {} - {}".format(matchup_id, franchise_id, result, total_score))
-            self.teams_to_load.append((matchup_id, franchise_id, result, total_score))
+                self.logger.info("APPEND FRANCHISE:  {} - {} - {} - {}".format(matchup_id, franchise_id, result, total_score))
+                self.teams_to_load.append((matchup_id, franchise_id, result, total_score))
 
         self.logger.info("RESULTS LIST")
         self.logger.info(self.players_to_load)

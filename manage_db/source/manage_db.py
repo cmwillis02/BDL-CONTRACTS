@@ -148,6 +148,10 @@ class Manage_db(object):
                         )
         self.commit()
 
+    def load_err(self):
+        pass
+        ## When loading records if an error is caught append that record to error dataset.
+
     ###  LOAD DATA METHODS  ###
     def load_player_dim(self, player_list):
 
@@ -162,6 +166,7 @@ class Manage_db(object):
                 				)
                 self.logger.info("DB LOAD(PLAYER):  {} - {} - {}".format(i[0], i[2], i[1]))
                 loaded_count = loaded_count + 1
+                self.commit()
 
             except (sqldb.Error, sqldb.Warning) as e:
                 self.db.rollback()
@@ -169,7 +174,6 @@ class Manage_db(object):
                 reject_count = reject_count + 1
 
         self.logger.info("COMMIT PLAYERS:  Total= {}, Loaded= {}, Rejected= {}".format(list_count, loaded_count, reject_count))
-        self.commit()
 
     def load_franchise_fact(self, matchup_list):
 
@@ -199,6 +203,7 @@ class Manage_db(object):
                                 "INSERT INTO history_franchise_fact (week_id, franchise_id, total_score, result, opponent_id, opponent_score, matchup_type) VALUES (%s, %s, %s, %s, %s, %s, %s)",(self.week_id, franchise_id, total_score, result, opponent_id, opponent_score, matchup_type)
                 )
                 load_count= load_count + 1
+                self.commit()
 
             except (sqldb.Error, sqldb.Warning) as e:
                 self.db.rollback()
@@ -206,7 +211,7 @@ class Manage_db(object):
                 error_count = error_count + 1
 
         self.logger.info("COMMIT FRANCHISE_FACT: Total= {}, Loaded= {}, Rejected= {}".format(list_count, load_count, error_count))
-        self.commit()
+
 
     def load_player_fact(self, players_to_load):
 
@@ -231,6 +236,7 @@ class Manage_db(object):
                 					"INSERT INTO history_player_fact (player_id, franchise_id, week_id, score, roster_status) VALUES (%s, %s, %s, %s, %s)",(player_id, franchise_id, self.week_id, score, status)
                 					)
                 load_count= load_count + 1
+                self.commit()
 
             except (sqldb.Error, sqldb.Warning) as e:
                 self.db.rollback()
@@ -238,7 +244,6 @@ class Manage_db(object):
                 error_count = error_count + 1
 
         self.logger.info("COMMIT PLAYER FACT: Total= {}, Loaded= {}, Rejected= {}".format(list_count, load_count, error_count))
-        self.commit()
 
 
 
