@@ -3,6 +3,9 @@ from contracts.models import Player, Franchise
 from django.urls import reverse
 
 class player_fact(models.Model):
+	class Meta:
+		unique_together= (['player','franchise','week'])
+
 	"""
 	Model representing player_fact table, one entry per player per week
 	"""
