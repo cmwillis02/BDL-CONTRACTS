@@ -87,6 +87,7 @@ if __name__ == "__main__":
     DB= manage_db.Manage_db()
 
     logger.info("Week_id= {}".format(DB.week_id))
+    print ("Main Process Run for {}".format(DB.week_id))
     logger.info("MFL Server + League_ID:  {}".format(DB.get_mfl_connection()))
     logger.info("DB CONNECTED")
 
