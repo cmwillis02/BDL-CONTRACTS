@@ -125,18 +125,19 @@ class Manage_db(object):
     def reset_week(self, week_id):
 
         self.cur.execute(
-                        "DELETE FROM history_player_fact WHERE week_id = %s",(week_id,)
+                        "DELETE FROM history_player_fact WHERE week_id >= %s",(week_id,)
         )
         self.cur.execute(
-                        "DELETE FROM history_franchise_fact WHERE week_Id = %s",(week_id,)
+                        "DELETE FROM history_franchise_fact WHERE week_Id >= %s",(week_id,)
         )
         self.cur.execute(
-                        "UPDATE contracts_week SET run_status = 0 WHERE week_id = %s",(week_id,)
+                        "UPDATE contracts_week SET run_status = 0 WHERE week_id >= %s",(week_id,)
         )
         self.commit()
 
     def set_playoffs(self):
 
+        ## TODO NEED TO UPDATE LOGIC TO ACCOUNT FOR POSTSEASON BYES + TOILET BOWL GAMES
         for row in self.playoff_list:
             self.logger.info("SET PLAYOFF MATCHUP:  {} - {} - {}".format(row[0], row[1], row[2]))
             self.cur.execute(
