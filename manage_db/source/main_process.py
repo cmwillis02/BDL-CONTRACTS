@@ -9,6 +9,7 @@ import BDL_fact
 import manage_db
 import mfl_api
 import player_dimension
+import roster
 
 
 
@@ -32,8 +33,20 @@ def run_job(job_id):
         logger.info("END LOAD:  PLAYER_DIM")
 
     if job_id == 2:
-        logger.info("ROSTER JOB NOT RUN")
-        pass
+        logger.info("BEGIN EXTRACT:  ROSTER")
+        json_data= mfl.rosters()
+        logger.info("END EXTRACT:  ROSTER")
+
+        logger.info("BEGIN TRANSFORM:  ROSTER")
+        current_contracts= DB.current_contracts()
+        roster_obj = roster.Roster(json_data, current_contracts)
+        roster_obj.process_rosters()
+        logger.info("END TRANSFORM:  ROSTER")
+
+        logger.info("BEGIN LOAD:  ROSTER")
+        DB.load_contracts(roster_obj.contract_updates)
+        logger.info("END LOAD:  ROSTER")
+
     if job_id == 3:
         #Create MFL json
         logger.info("BEGIN EXTRACT:  FACT")

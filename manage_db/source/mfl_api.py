@@ -157,14 +157,14 @@ class Export():
 
         url='{}?TYPE={}&L={}&APIKEY=&FRANCHISE=&JSON=1'.format(self.export_url, type, self.league_id)
 
-        self.logger.debug("EXPORT")
-        self.logger.debug("TYPE= {}".format(type))
-        self.logger.debug("URL= {}".format(url))
+        self.logger.info("EXPORT")
+        self.logger.info("TYPE= {}".format(type))
+        self.logger.info("URL= {}".format(url))
 
         response= self.session.get(url)
         json_data= json.loads(response.text)
-        print (url)
 
+        self.logger.debug("ROSTER RAW DATA:  {}".format(json.dumps(json_data, sort_keys= True, indent= 4, separators= (',',':'))))
 
         return json_data
 
@@ -195,7 +195,7 @@ class Export():
         response= self.session.get(url)
         json_data= json.loads(response.text)
 
-        self.logger.debug("JSON DATA:  {}".format(json.dumps(json_data, sort_keys= True, indent= 4, separators= (',',':'))))
+        self.logger.debug("PLAYER_DIM RAW DATA:  {}".format(json.dumps(json_data, sort_keys= True, indent= 4, separators= (',',':'))))
 
         return json_data
 

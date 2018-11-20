@@ -1,3 +1,4 @@
+from datetime import date
 import logging
 import sys
 
@@ -153,6 +154,18 @@ class Manage_db(object):
         pass
         ## When loading records if an error is caught append that record to error dataset.
 
+    def current_contracts(self):
+        self.logger.info("PULL CURRENT CONTRACTS")
+
+        self.cur.execute(
+                            "SELECT player_id, franchise_id, id FROM contracts_contract WHERE current_ind = true"
+                        )
+
+        current_contracts= self.cur.fetchall()
+        self.logger.debug(current_contracts)
+
+        return current_contracts
+
     ###  LOAD DATA METHODS  ###
     def load_player_dim(self, player_list):
 
@@ -245,6 +258,35 @@ class Manage_db(object):
                 error_count = error_count + 1
 
         self.logger.info("COMMIT PLAYER FACT: Total= {}, Loaded= {}, Rejected= {}".format(list_count, load_count, error_count))
+
+
+    ###  Contract Methods (Add Update Close) ###
+    def load_contracts(self, contract_update_list):
+
+        for contract in contract_update_list:
+            if contract[0] == 'New':
+                ## Add a new contract.
+                self.cur.execute(
+                                "INSERT INTO contracts_contract (player_id, franchise_id, current_ind, roster_status, date_assigned, years, years_remaining) VALUES (%s, %s, %s, %s, %s, %s, %s)",(contract[1]['player_id'], contract[1]['franchise_id'], 1, contract[1]['status'], date.today(),contract[1]['years'], contract[1]['years'])
+                )
+                self.commit()
+
+                self.logger.info("LOAD CONTRACT:  {} - {}".format(contract[1]['player_id'], contract[1]['franchise_id']))
+
+            elif contract[0] == 'Update':
+                ## Add a new contract and close the previous contract.
+                self.cur.execute(
+                                "INSERT INTO contracts_contract (player_id, franchise_id, current_ind, roster_status, date_assigned, years, years_remaining) VALUES (%s, %s, %s, %s, %s, %s, %s)",(contract[1]['player_id'], contract[1]['franchise_id'], 1, contract[1]['status'], date.today(), contract[1]['years'], contract[1]['years'])
+                )
+
+                self.logger.info("LOAD CONTRACT:  {} - {}".format(contract[1]['player_id'], contract[1]['franchise_id']))
+
+                self.cur.execute(
+                                "UPDATE contracts_contract SET current_ind = 0, date_terminated= %s, years_remaining= %s, roster_status= %s WHERE id= %s",(today, None, None, contract[1]['previous_contract'])
+                )
+                self.logger.info("CLOSE PREVIOUS CONTRACT: {}".format(contract[1]['previous_contract']))
+                self.commit()
+
 
 
 

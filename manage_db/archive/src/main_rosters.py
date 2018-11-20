@@ -142,6 +142,7 @@ class Main_roster(conn.Connect):
 						"UPDATE contracts_contract SET current_ind = 0, date_terminated= %s, years_remaining= %s, roster_status= %s WHERE id= %s",(today, None, None, contract_id)
 						)
 
+
 if __name__ == "__main__":
 	obj= Main_roster()
 	obj.main_process()
